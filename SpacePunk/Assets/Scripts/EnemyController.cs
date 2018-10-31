@@ -19,8 +19,11 @@ public class EnemyController : MonoBehaviour
     public float banderaDistance;
     public float pickUpDistance = 50;
     public bool hasFlag = false;
+    public bool isGoingToFlag = false;
+    public bool flagIsSecured = false;
     private GameObject[] tagPlayer;
-    PlayerController player;
+
+    public bool isInChargeOfTakingFlag = false;
 
     void Start()
     {
@@ -34,31 +37,7 @@ public class EnemyController : MonoBehaviour
     }
     void Update()
     {
-        if (nave != null && nave.activeSelf)
-        {
-            if ((nave.transform.position - this.transform.position).sqrMagnitude < playerDistance)
-            {
-                transform.position = Vector3.MoveTowards(transform.position, nave.transform.position, speed);
-            }
-            playerDistance = Vector3.Distance(nave.transform.position, transform.position);
-
-            if (playerDistance < chaseDistance)
-            {
-                if (playerDistance > attackDistance)
-                {
-                    ChasePlayer();
-                }
-                else
-                {
-                    Attack();
-                }
-            }
-            if (playerDistance < lookDistance)
-            {
-                LookAtPlayer();
-            }
-        }
-        else
+        if (isInChargeOfTakingFlag)
         {
             if (hasFlag == false)
             {
@@ -66,6 +45,33 @@ public class EnemyController : MonoBehaviour
             }
             else
                 ReturnFlag();
+        }
+        else
+        {
+            if (nave != null && nave.activeSelf)
+            {
+                if ((nave.transform.position - this.transform.position).sqrMagnitude < playerDistance)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, nave.transform.position, speed);
+                }
+                playerDistance = Vector3.Distance(nave.transform.position, transform.position);
+
+                if (playerDistance < chaseDistance)
+                {
+                    if (playerDistance > attackDistance)
+                    {
+                        ChasePlayer();
+                    }
+                    else
+                    {
+                        Attack();
+                    }
+                }
+                if (playerDistance < lookDistance)
+                {
+                    LookAtPlayer();
+                }
+            }
         }
     }
 
@@ -106,7 +112,15 @@ public class EnemyController : MonoBehaviour
 
     public void Bandera()
     {
-        rb.MovePosition(transform.position + (banderaEnemiga.position - transform.position).normalized * speed * Time.deltaTime);
+        if(flagIsSecured == false)
+        {
+            isGoingToFlag = true;
+            rb.MovePosition(transform.position + (banderaEnemiga.position - transform.position).normalized * speed * Time.deltaTime);
+        }
+        else
+        {
+           // Attack();
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -116,12 +130,16 @@ public class EnemyController : MonoBehaviour
             other.gameObject.SetActive(false);
             hasFlag = true;
             Debug.Log("The Enemy has your flag");
+        //    isGoingToFlag = false;
+          //  flagIsSecured = true;
             ReturnFlag();
         }
         if(other.gameObject.CompareTag("EnemyFlag"))
         {
             hasFlag = false;
             Debug.Log("The Enemy has capture your flag");
+         //   isGoingToFlag = true; 
+         //   flagIsSecured = false;
         }
     }
     void ReturnFlag()

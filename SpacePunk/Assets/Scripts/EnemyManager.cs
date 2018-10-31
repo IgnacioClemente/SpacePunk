@@ -4,22 +4,27 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
-    public GameObject[] naves;
+    List<GameObject> naves;
     EnemyController enemy;
 
+    public void Start()
+    {
+        naves = new List<GameObject>();
+        enemy = GetComponentInChildren<EnemyController>();
+
+        foreach (Transform t in transform)
+        {
+            naves.Add(t.gameObject);
+        }
+        naves[0].GetComponent<EnemyController>().isInChargeOfTakingFlag = true;
+        
+    }
     public void Update()
     {
-        for(int i = 0; i < naves.Length;i++)
-        {
-            if(naves[0])
-            {
-                enemy.Bandera();
-            }
-        }
-        for(int i = 0; i < naves.Length-1;i++)
-        {
-            enemy.Attack();
-        }
+        naves[0].GetComponent<EnemyController>().isGoingToFlag = true;
+           
+                int rdm = Random.Range(0, naves.Count);
+                naves[rdm].GetComponent<EnemyController>().Bandera();
     }
 
-}
+    }
