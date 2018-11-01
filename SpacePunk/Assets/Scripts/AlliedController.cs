@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public class AlliedController: MonoBehaviour
 {
     public Rigidbody rb;
     public GameObject nave;
@@ -10,7 +10,7 @@ public class EnemyController : MonoBehaviour
     public Transform shotSpawn;
     public float fireRate;
     public GameObject bulletPrefab;
-    public float playerDistance;
+    public float enemyDistance;
     public float attackDistance = 18;
     public float chaseDistance = 18;
     public float lookDistance = 18;
@@ -21,19 +21,14 @@ public class EnemyController : MonoBehaviour
     public bool hasFlag = false;
     public bool isGoingToFlag = false;
     public bool flagIsSecured = false;
-    private GameObject[] tagPlayer;
+    public float health = 15;
+    AlliedManager allied;
 
     public bool isInChargeOfTakingFlag = false;
 
     void Start()
     {
-        tagPlayer = GameObject.FindGameObjectsWithTag("Player");
-
-        for(int i = 0; i < tagPlayer.Length;i++)
-        {
-            tagPlayer[i].SetActive(true);
-            nave = tagPlayer[i];
-        }
+        allied = GetComponentInParent<AlliedManager>();
     }
     void Update()
     {
@@ -50,32 +45,37 @@ public class EnemyController : MonoBehaviour
         {
             if (nave != null && nave.activeSelf)
             {
-                if ((nave.transform.position - this.transform.position).sqrMagnitude < playerDistance)
+                if ((nave.transform.position - this.transform.position).sqrMagnitude < enemyDistance)
                 {
                     transform.position = Vector3.MoveTowards(transform.position, nave.transform.position, speed);
                 }
-                playerDistance = Vector3.Distance(nave.transform.position, transform.position);
+                enemyDistance = Vector3.Distance(nave.transform.position, transform.position);
 
-                if (playerDistance < chaseDistance)
+                if (enemyDistance < chaseDistance)
                 {
-                    if (playerDistance > attackDistance)
+                    if (enemyDistance > attackDistance)
                     {
-                        ChasePlayer();
+                        ChaseEnemy();
                     }
                     else
                     {
                         Attack();
                     }
                 }
-                if (playerDistance < lookDistance)
+                if (enemyDistance < lookDistance)
                 {
-                    LookAtPlayer();
+                    LookAtEnemy();
                 }
             }
         }
+        if (health < 0)
+        {
+            allied.TheGuyWithTheFlagDied(this.nave);
+            Destroy(this.gameObject);
+        }
     }
 
-   public void LookAtPlayer()
+    public void LookAtEnemy()
     {
         float angle = Vector3.SignedAngle(transform.right, (nave.transform.position - transform.position), transform.forward);
 
@@ -86,25 +86,25 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-   public void ChasePlayer()
+    public void ChaseEnemy()
     {
         rb.MovePosition(transform.position + (nave.transform.position - transform.position).normalized * speed * Time.deltaTime);
     }
 
-   public void Attack()
+    public void Attack()
     {
         Ray ray = new Ray(transform.position, transform.right);
         RaycastHit hit;
         if (Physics.SphereCast(ray, 0.75f, out hit))
         {
             GameObject hitobject = hit.transform.gameObject;
-            if (hitobject.GetComponent<PlayerController>())
+            if (hitobject.GetComponent<EnemyController>())
             {
                 if (bulletPrefab != null)
                 {
                     GameObject bulletAux = Instantiate(bulletPrefab) as GameObject;
                     bulletAux.transform.position = shotSpawn.position;
-                    hitobject.GetComponent<PlayerController>().health -= 5;
+                    hitobject.GetComponent<EnemyController>().health -= 5;
                 }
             }
         }
@@ -112,48 +112,49 @@ public class EnemyController : MonoBehaviour
 
     public void CapturarBandera()
     {
-        if(flagIsSecured == false)
+        if (flagIsSecured == false)
         {
             isGoingToFlag = true;
             rb.MovePosition(transform.position + (banderaEnemiga.position - transform.position).normalized * speed * Time.deltaTime);
-        }
-        else
-        {
-           // Attack();
         }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("PlayerFlag"))
+        if (other.gameObject.CompareTag("EnemyFlag"))
         {
             other.gameObject.SetActive(false);
             hasFlag = true;
-            Debug.Log("The Enemy has your flag");
             isGoingToFlag = false;
             flagIsSecured = false;
             ReturnFlag();
         }
-        if(other.gameObject.CompareTag("EnemyFlag"))
+
+        if (other.gameObject.CompareTag("PlayerFlag"))
         {
+            Vector3 rot = transform.rotation.eulerAngles;
+            rot = new Vector3(90, 0, 0);
             hasFlag = false;
-            Debug.Log("The Enemy has capture your flag");
-            isGoingToFlag = false; 
+
+            if (transform.rotation == Quaternion.Euler(90, 0, 180))
+            {
+                transform.rotation = Quaternion.Euler(rot);
+            }
+            isGoingToFlag = false;
             flagIsSecured = true;
         }
     }
+
     void ReturnFlag()
     {
         Vector3 rot = transform.rotation.eulerAngles;
-        rot = new Vector3(90, 180, 0);
-        if (transform.rotation == Quaternion.Euler(90,0,0))
+        rot = new Vector3(90, 0, 180);
+
+        if (transform.rotation == Quaternion.Euler(90, 0, 0))
         {
-            //rb.MoveRotation()
+            transform.rotation = Quaternion.Euler(rot);
         }
-       /* else
-        {
-            transform.Rotate(90, 0, 0);
-        }*/
-        rb.MovePosition(transform.position + (banderaAliada.position - transform.position).normalized * speed * Time.deltaTime);
+        // rb.MovePosition(transform.position + (banderaAliada.position - transform.position).normalized * speed * Time.deltaTime);
+        transform.Translate(Vector3.left * speed * Time.deltaTime);
     }
 }

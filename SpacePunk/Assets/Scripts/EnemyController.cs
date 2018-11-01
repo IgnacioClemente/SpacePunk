@@ -22,12 +22,15 @@ public class EnemyController : MonoBehaviour
     public bool isGoingToFlag = false;
     public bool flagIsSecured = false;
     private GameObject[] tagPlayer;
+    public float health = 15;
+    EnemyManager enemy;
 
     public bool isInChargeOfTakingFlag = false;
 
     void Start()
     {
         tagPlayer = GameObject.FindGameObjectsWithTag("Player");
+        enemy = GetComponentInParent<EnemyManager>();
 
         for(int i = 0; i < tagPlayer.Length;i++)
         {
@@ -41,7 +44,7 @@ public class EnemyController : MonoBehaviour
         {
             if (hasFlag == false)
             {
-                Bandera();
+                CapturarBandera();
             }
             else
                 ReturnFlag();
@@ -72,6 +75,11 @@ public class EnemyController : MonoBehaviour
                     LookAtPlayer();
                 }
             }
+        }
+        if (health < 0)
+        {
+            enemy.TheGuyWithTheFlagDied(this.nave);
+            Destroy(this.gameObject);
         }
     }
 
@@ -110,16 +118,12 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    public void Bandera()
+    public void CapturarBandera()
     {
         if(flagIsSecured == false)
         {
             isGoingToFlag = true;
             rb.MovePosition(transform.position + (banderaEnemiga.position - transform.position).normalized * speed * Time.deltaTime);
-        }
-        else
-        {
-           // Attack();
         }
     }
 
@@ -129,21 +133,36 @@ public class EnemyController : MonoBehaviour
         {
             other.gameObject.SetActive(false);
             hasFlag = true;
-            Debug.Log("The Enemy has your flag");
-        //    isGoingToFlag = false;
-          //  flagIsSecured = true;
+            isGoingToFlag = false;
+            flagIsSecured = false;
             ReturnFlag();
         }
+
         if(other.gameObject.CompareTag("EnemyFlag"))
         {
+            Vector3 rot = transform.rotation.eulerAngles;
+            rot = new Vector3(90, 0, 0);
             hasFlag = false;
-            Debug.Log("The Enemy has capture your flag");
-         //   isGoingToFlag = true; 
-         //   flagIsSecured = false;
+
+            if (transform.rotation == Quaternion.Euler(90, 0, 180))
+            {
+                transform.rotation = Quaternion.Euler(rot);
+            }
+            isGoingToFlag = false;
+            flagIsSecured = true;
         }
     }
+
     void ReturnFlag()
     {
-        rb.MovePosition(transform.position + (banderaAliada.position - transform.position).normalized * speed * Time.deltaTime);
+        Vector3 rot = transform.rotation.eulerAngles;
+        rot = new Vector3(90, 0, 180);
+
+        if (transform.rotation == Quaternion.Euler(90, 0, 0))
+        {
+            transform.rotation = Quaternion.Euler(rot);
+        }
+        // rb.MovePosition(transform.position + (banderaAliada.position - transform.position).normalized * speed * Time.deltaTime);
+        transform.Translate(Vector3.right * speed * Time.deltaTime);
     }
 }

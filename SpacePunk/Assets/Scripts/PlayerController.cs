@@ -21,16 +21,50 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButton(0) && Time.time > nextFireSingle)
+        if (Input.GetMouseButtonDown(0) && Time.time > nextFireSingle)
         {
             nextFireSingle = Time.time + fireRateSingle;
             Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+            Ray ray = new Ray(shotSpawn.position, shotSpawn.right*10);
+            Debug.DrawLine(shotSpawn.position, shotSpawn.right * 10, Color.white, 20f);
+            RaycastHit hit;
+            if (Physics.SphereCast(ray, 0.75f, out hit))
+            {
+                GameObject hitobject = hit.transform.gameObject;
+                if (hitobject.GetComponent<EnemyController>())
+                {
+                    hitobject.GetComponent<EnemyController>().health -= 5;
+                    Debug.Log("Nave enemiga toma daño");
+                }
+            }
         }
         if(Input.GetMouseButton(1) && Time.time > nextFireDouble)
         {
             nextFireDouble = Time.time + fireRateDouble;
             Instantiate(shot, shotSpawn_1.position, shotSpawn_1.rotation);
             Instantiate(shot, shotSpawn_2.position, shotSpawn_2.rotation);
+            Ray ray = new Ray(shotSpawn_1.position, shotSpawn_1.right*10);
+            Ray ray_2 = new Ray(shotSpawn_2.position, shotSpawn_2.right * 10);
+            Debug.DrawLine(shotSpawn.position, shotSpawn.right * 10, Color.white, 20f);
+            RaycastHit hit;
+            if (Physics.SphereCast(ray, 0.75f, out hit))
+            {
+                GameObject hitobject = hit.transform.gameObject;
+                if (hitobject.GetComponent<EnemyController>())
+                {
+                    hitobject.GetComponent<EnemyController>().health -= 5;
+                    Debug.Log("Nave enemiga toma daño");
+                }
+            }
+            if (Physics.SphereCast(ray_2, 0.75f, out hit))
+            {
+                GameObject hitobject = hit.transform.gameObject;
+                if (hitobject.GetComponent<EnemyController>())
+                {
+                    hitobject.GetComponent<EnemyController>().health -= 5;
+                    Debug.Log("Nave enemiga toma daño");
+                }
+            }
         }
 
         if(health < 0)
@@ -42,12 +76,26 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(Input.GetKey(KeyCode.W))
-         transform.position += Vector3.left * speed * Time.deltaTime;
-        if(Input.GetKey(KeyCode.S))
-            transform.position += Vector3.right * speed * Time.deltaTime;
+        if (Input.GetKey(KeyCode.W))
+        {
+            transform.Translate(transform.right * -speed * Time.deltaTime);
+            //transform.position -= Vector3.right * Time.deltaTime * speed;
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            transform.Translate(transform.right * speed * Time.deltaTime);
+            //transform.position += Vector3.right * Time.deltaTime * speed;
+        }
         if (Input.GetKey(KeyCode.A))
-            transform.Rotate(0, 0, rotationSpeed * Time.deltaTime);
+        {
+            transform.Rotate(0, 0, 1);
+            // transform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime, Space.World);
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            transform.Rotate(0, 0, -1);
+            // transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime, Space.World);
+        }
     }
 
     /* void OnTriggerEnter(Collider other)

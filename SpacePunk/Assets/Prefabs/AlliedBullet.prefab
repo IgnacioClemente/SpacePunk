@@ -21,9 +21,9 @@ GameObject:
   - component: {fileID: 4014075528272834}
   - component: {fileID: 54731678193094710}
   - component: {fileID: 136905397813191392}
-  - component: {fileID: 114216391110508070}
+  - component: {fileID: 114051516408717178}
   m_Layer: 0
-  m_Name: Bullet_Enemy
+  m_Name: AlliedBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -129,7 +129,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &114216391110508070
+--- !u!114 &114051516408717178
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -137,7 +137,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1216420169677288}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4693851330ba9a44bc03b3b370c50cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 6ce578298fe69844f8dcede5b77721a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
