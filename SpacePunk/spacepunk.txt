@@ -1,2 +1,0 @@
-si destruyen a la nave encargada de la bandera esta le avisa al manager, el manager lo saca de su list 
-y le dice a otro que la valla a buscar
