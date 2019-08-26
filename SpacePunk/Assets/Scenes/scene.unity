@@ -132,9 +132,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 455797525}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97870324cedf59a4688f23bcde33e0d1, type: 3}
+  m_Script: {fileID: 11500000, guid: e5bb7c3e56b8af542baf6c6be9d27d8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerAllies: 1
+  enemyTeam: {fileID: 1367738096}
 --- !u!4 &455797527
 Transform:
   m_ObjectHideFlags: 0
@@ -254,8 +256,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 580356366}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -4.49, y: -10, z: 0}
-  m_LocalScale: {x: 50, y: 50, z: 1}
+  m_LocalPosition: {x: 0, y: -10, z: 0}
+  m_LocalScale: {x: 125, y: 125, z: 100}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -290,26 +292,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e90e3bc7cb88f6b4d891befb863ff02a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 631077870}
-  nave: {fileID: 631077867}
-  speed: 5
   shotSpawn: {fileID: 1492167552}
-  fireRate: 0.3
   bulletPrefab: {fileID: 1266761720224394, guid: 31be6fb19c728ee46b70c7f4735b2982,
     type: 2}
-  playerDistance: 0
   attackDistance: 18
   chaseDistance: 18
   lookDistance: 18
-  banderaEnemiga: {fileID: 861469700}
-  banderaAliada: {fileID: 989776382}
-  banderaDistance: 0
-  pickUpDistance: 50
-  hasFlag: 0
-  isGoingToFlag: 0
-  flagIsSecured: 0
-  health: 15
-  isInChargeOfTakingFlag: 0
+  maxHealth: 15
+  speed: 5
+  fireRate: 0.3
+  damage: 5
 --- !u!136 &631077869
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -776,6 +768,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5bb7c3e56b8af542baf6c6be9d27d8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerAllies: 0
+  enemyTeam: {fileID: 455797526}
 --- !u!1 &1488185477
 GameObject:
   m_ObjectHideFlags: 0
@@ -871,6 +865,46 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4677375549984384, guid: c5bdb280375e7434c98ebcb9bd205bcc, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 54393700080156434, guid: c5bdb280375e7434c98ebcb9bd205bcc,
+        type: 2}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4677375549984384, guid: c5bdb280375e7434c98ebcb9bd205bcc, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4677375549984384, guid: c5bdb280375e7434c98ebcb9bd205bcc, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4677375549984384, guid: c5bdb280375e7434c98ebcb9bd205bcc, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212609341253604114, guid: c5bdb280375e7434c98ebcb9bd205bcc,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212609341253604114, guid: c5bdb280375e7434c98ebcb9bd205bcc,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212609341253604114, guid: c5bdb280375e7434c98ebcb9bd205bcc,
+        type: 2}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1262006515728966, guid: c5bdb280375e7434c98ebcb9bd205bcc, type: 2}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c5bdb280375e7434c98ebcb9bd205bcc, type: 2}
   m_IsPrefabParent: 0
@@ -915,29 +949,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1660868444}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f657ab6fbaa78f84db32bfa5d1bcf753, type: 3}
+  m_Script: {fileID: 11500000, guid: e90e3bc7cb88f6b4d891befb863ff02a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 1660868447}
-  nave: {fileID: 1660868444}
-  speed: 5
   shotSpawn: {fileID: 1488185478}
-  fireRate: 0.3
   bulletPrefab: {fileID: 1216420169677288, guid: 5f1875a6f3d4d5c439b2e270eb75f9ed,
     type: 2}
-  enemyDistance: 0
   attackDistance: 18
   chaseDistance: 18
   lookDistance: 18
-  banderaEnemiga: {fileID: 989776382}
-  banderaAliada: {fileID: 861469700}
-  banderaDistance: 0
-  pickUpDistance: 50
-  hasFlag: 0
-  isGoingToFlag: 0
-  flagIsSecured: 0
-  health: 15
-  isInChargeOfTakingFlag: 0
+  maxHealth: 15
+  speed: 5
+  fireRate: 0.3
+  damage: 5
 --- !u!54 &1660868447
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1064,7 +1088,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 1
+  orthographic: 0
   orthographic size: 8
   m_Depth: -1
   m_CullingMask:
@@ -1087,8 +1111,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1793563984}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -9, y: 28.92, z: -0.07}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 42.320007, z: 0}
   m_LocalScale: {x: 1.9910583, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
