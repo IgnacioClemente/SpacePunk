@@ -4,31 +4,65 @@ using UnityEngine;
 
 public class AIManager : MonoBehaviour
 {
-    [SerializeField] private bool playerAllies;
-    [SerializeField] private AIManager enemyTeam;
+    List<AIController> enemyShips;
+    List<AIController> alliedShips;
 
-    List<GameObject> naves;
+    public static AIManager Instance { get; private set; }
 
-    void Awake()
+   private void Awake()
     {
-        naves = new List<GameObject>();
-        foreach (Transform t in transform)
+        if (Instance != null) Destroy(this);
+
+        Instance = this;
+
+        enemyShips = new List<AIController>();
+        alliedShips = new List<AIController>();
+
+        foreach (Transform child in transform)
         {
-            naves.Add(t.gameObject);
+            var ship = child.GetComponent<AIController>();
+            if(ship.Team == Team.Enemy)
+                enemyShips.Add(ship);
+            else
+                alliedShips.Add(ship);
         }
-        //naves[0].GetComponent<EnemyController>().isInChargeOfTakingFlag = true;
+        for (int i = 0; i < enemyShips.Count; i++)
+        {
+            enemyShips[i].SetShip(alliedShips);
+        }
+
+        for (int i = 0; i < alliedShips.Count; i++)
+        {
+            alliedShips[i].SetShip(enemyShips);
+        }
         
+        int rdm = Random.Range(0, enemyShips.Count);
+        enemyShips[rdm].GetComponent<AIFlagController>().isInChargeOfTakingFlag = true;
+
+        int alliedRdm = Random.Range(0, alliedShips.Count);
+        alliedShips[alliedRdm].GetComponent<AIFlagController>().isInChargeOfTakingFlag = true;
+
     }
 
-    public void TheGuyWithTheFlagDied(GameObject nave)
+    public void FlagCarrierDied(AIController ship)
     {
-       naves.Remove(nave);
-       LookForNewFlagCarrier();
-    }
+        //enemyShips.Remove(ship);
+        if (ship.Team == Team.Enemy)
+        {
+            int rdm = Random.Range(0, enemyShips.Count);
+            if (enemyShips[rdm] == ship)
+                FlagCarrierDied(ship);
 
-   public void LookForNewFlagCarrier()
-    {
-        int rdm = Random.Range(0, naves.Count);
-        //naves[rdm].GetComponent<EnemyController>().isInChargeOfTakingFlag = true;
+            enemyShips[rdm].GetComponent<AIFlagController>().isInChargeOfTakingFlag = true;
+        }
+        else
+        {
+            int rdm = Random.Range(0, alliedShips.Count);
+            if (alliedShips[rdm] == ship)
+                FlagCarrierDied(ship);
+
+            alliedShips[rdm].GetComponent<AIFlagController>().isInChargeOfTakingFlag = true;
+
+        }
     }
 }

@@ -4,104 +4,102 @@ using UnityEngine;
 
 public class AIController : MonoBehaviour
 {
+    [SerializeField] protected Team team;
+    [SerializeField] protected PlayerController player;
     [SerializeField] Transform shotSpawn;
-    [SerializeField] GameObject bulletPrefab;
+    [SerializeField] protected Mover bulletPrefab;
     [SerializeField] protected float attackDistance = 18;
     [SerializeField] protected float chaseDistance = 18;
     [SerializeField] protected float lookDistance = 18;
     [SerializeField] int maxHealth = 15;
-    [SerializeField] float speed;
+    [SerializeField] float speed = 2;
     [SerializeField] float fireRate;
-    [SerializeField] int damage;
+    [SerializeField] int damage = 5;
 
     protected Transform target;
-
-    protected GameObject player;
-    protected Rigidbody rb;
-    protected float playerDistance;
+    protected Vector3 initialPosition;
+    protected List<Transform> possibleTargets;
+    
+    protected float targetDistance;
     protected int actualHealth;
     protected float actualSpeed;
     protected int actualDamage;
-    protected AIManager enemy;
     protected GameObject[] tagPlayer;
 
     public int ActualHealth { get { return actualHealth; } set { actualHealth = value; } }
     public float ActualSpeed { get { return actualSpeed; } }
+    public Team Team { get { return team; } }
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
         actualHealth = maxHealth;
         actualSpeed = speed;
         actualDamage = damage;
     }
 
-    //Cosas que va a hacer esta clase padre:
-    /* Disparar
-     * Perseguir
-     * Morir
-     * Moverse
-     * Agarrar PowerUps
-     * */
-
-    void Start()
+    private void Start()
     {
-        tagPlayer = GameObject.FindGameObjectsWithTag("Player");
-        enemy = GetComponentInParent<AIManager>();
-
-        for(int i = 0; i < tagPlayer.Length;i++)
-        {
-            tagPlayer[i].SetActive(true);
-            player = tagPlayer[i];
-            target = player.transform;
-        }
+        initialPosition = transform.position;    
     }
 
     protected virtual void Update()
     {
+        if(target != null && target.gameObject.activeInHierarchy)
+            transform.position += (target.position - transform.position).normalized * actualSpeed * Time.deltaTime;
+    }
 
-        transform.Translate((target.position - transform.position).normalized * actualSpeed * Time.deltaTime);
-        if (actualHealth < 0)
+    public virtual void SetShip(List<AIController> targets)
+    {
+        possibleTargets = new List<Transform>();
+        for (int i = 0; i < targets.Count; i++)
         {
-            enemy.TheGuyWithTheFlagDied(this.player);
-            Destroy(this.gameObject);
+            possibleTargets.Add(targets[i].transform);
+        }
+
+        if (team == Team.Enemy)
+            possibleTargets.Add(player.transform);
+
+        ChooseTarget();
+    }
+
+    public void ChooseTarget()
+    {
+        target = possibleTargets[Random.Range(0, possibleTargets.Count)];
+        if (target == null || !target.gameObject.activeInHierarchy)
+            ChooseTarget();
+    }
+
+    public virtual void TakeDamage(int damage)
+    {
+        actualHealth -= damage;
+        if (actualHealth <= 0)
+        {
+            gameObject.SetActive(false);
+            Invoke("Respawn", 3f);
         }
     }
 
-   public void LookAtPlayer()
+    public void Respawn()
     {
-        float angle = Vector3.SignedAngle(transform.right, (player.transform.position - transform.position), transform.forward);
-
-        if (angle > 0.1f || angle < -0.1f)
-        {
-            Quaternion qAux = Quaternion.Euler(0, 0, angle);
-            rb.rotation *= qAux;
-        }
+        transform.position = initialPosition;
+        gameObject.SetActive(true);
     }
 
-   public void ChasePlayer()
+    public void LookAtTarget()
     {
-        rb.MovePosition(transform.position + (player.transform.position - transform.position).normalized * speed * Time.deltaTime);
+        transform.right = (target.position - transform.position).normalized;
     }
 
-   public void Attack()
+    public void ChaseTarget()
     {
-        Ray ray = new Ray(transform.position, transform.right);
-        RaycastHit hit;
-        if (Physics.SphereCast(ray, 0.75f, out hit))
-        {
-            GameObject hitobject = hit.transform.gameObject;
-            if (hitobject.GetComponent<PlayerController>())
-            {
-                if (bulletPrefab != null)
-                {
-                    GameObject bulletAux = Instantiate(bulletPrefab) as GameObject;
-                    bulletAux.transform.position = shotSpawn.position;
-                    hitobject.GetComponent<PlayerController>().health -= 5;
-                }
-            }
-        }
+        //rb.MovePosition(transform.position + (target.transform.position - transform.position).normalized * speed * Time.deltaTime);
     }
 
-    
+    public void Attack()
+    {
+        var bullet1 = Instantiate(bulletPrefab, shotSpawn.position, shotSpawn.rotation);
+        bullet1.SetBullet(actualDamage, (target.position - transform.position).normalized);
+    }
 }
+
+public enum Team { Ally, Enemy}

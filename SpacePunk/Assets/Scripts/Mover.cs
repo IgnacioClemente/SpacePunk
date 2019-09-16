@@ -7,9 +7,35 @@ public class Mover : MonoBehaviour
     public float speed;
     public Rigidbody rb;
 
+    private int damage;
+    private Vector3 dir;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.velocity = transform.right * speed;
+        rb.velocity = dir * speed;
+    }
+
+    public void SetBullet(int damage, Vector3 dir)
+    {
+        this.damage = damage;
+        this.dir = dir;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            var player = other.GetComponent<PlayerController>();
+            if(player != null)
+                player.TakeDamage(damage);
+        }
+        else
+        {
+            var aiToDamage = other.GetComponent<AIController>();
+            if(aiToDamage != null)
+                aiToDamage.TakeDamage(damage);
+        }
+        Destroy(gameObject);
     }
 }

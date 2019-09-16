@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 54731678193094710}
   - component: {fileID: 136905397813191392}
   - component: {fileID: 114051516408717178}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: AlliedBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 4813282942269082}
   - component: {fileID: 33002150680293580}
   - component: {fileID: 23285232129558132}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: VFX_Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82,7 +82,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -98,7 +97,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5

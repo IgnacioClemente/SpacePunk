@@ -4,84 +4,64 @@ using UnityEngine;
 
 public class AIFlagController : AIController
 {
-    [SerializeField] Transform banderaEnemiga;
-    [SerializeField] Transform banderaAliada;
+    [SerializeField] Transform enemyFlag;
+    [SerializeField] Transform allyFlag;
     [SerializeField] float pickUpDistance = 50;
 
-    private float banderaDistance;
+    public bool isInChargeOfTakingFlag;
+
+    private float flagDistance;
     private bool hasFlag;
     private bool isGoingToFlag;
     private bool flagIsSecured;
-    private bool isInChargeOfTakingFlag;
-
-    //Cosas que va a hacer esta clase hija:
-    /*Agarrar bandera
-     * Entregar bandera
-     * Recuperar bandera caida
-     * */
 
     protected override void Update()
-    {/*
+    {
+        if (!isActiveAndEnabled) return;
+
+        targetDistance = Vector3.Distance(target.transform.position, transform.position);
+        LookAtTarget();
         if (isInChargeOfTakingFlag)
         {
             if (hasFlag == false)
             {
-                CapturarBandera();
+                CaptureFlag();
             }
             else
                 ReturnFlag();
         }
         else
         {
-            if (player != null && player.activeSelf)
+            if (target != null)
             {
-                if ((player.transform.position - this.transform.position).sqrMagnitude < playerDistance)
+                if (targetDistance < chaseDistance)
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, player.transform.position, actualSpeed);
-                }
-                playerDistance = Vector3.Distance(player.transform.position, transform.position);
-
-                if (playerDistance < chaseDistance)
-                {
-                    if (playerDistance > attackDistance)
+                    if (targetDistance > attackDistance)
                     {
-                        ChasePlayer();
+                        ChaseTarget();
                     }
                     else
                     {
                         Attack();
                     }
                 }
-                if (playerDistance < lookDistance)
-                {
-                    LookAtPlayer();
-                }
             }
-        }*/
+        }
         base.Update();
     }
 
-    public void CapturarBandera()
+    public void CaptureFlag()
     {
         if (flagIsSecured == false)
         {
             isGoingToFlag = true;
-            rb.MovePosition(transform.position + (banderaEnemiga.position - transform.position).normalized * actualSpeed * Time.deltaTime);
+            target = enemyFlag;
         }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("PlayerFlag"))
-        {
-            other.gameObject.SetActive(false);
-            hasFlag = true;
-            isGoingToFlag = false;
-            flagIsSecured = false;
-            ReturnFlag();
-        }
-
-        if (other.gameObject.CompareTag("EnemyFlag"))
+        if (other.transform == allyFlag)
         {
             Vector3 rot = transform.rotation.eulerAngles;
             rot = new Vector3(90, 0, 0);
@@ -94,18 +74,32 @@ public class AIFlagController : AIController
             isGoingToFlag = false;
             flagIsSecured = true;
         }
+
+        if (other.transform == enemyFlag)
+        {
+            other.gameObject.SetActive(false);
+            hasFlag = true;
+            isGoingToFlag = false;
+            flagIsSecured = false;
+            ReturnFlag();
+        }
+    }
+
+    public override void TakeDamage(int damage)
+    {
+        actualHealth -= damage;
+        if (actualHealth <= 0)
+        {
+            if(isInChargeOfTakingFlag)
+                AIManager.Instance.FlagCarrierDied(this);
+
+            gameObject.SetActive(false);
+            Invoke("Respawn", 5f);
+        }
     }
 
     void ReturnFlag()
     {
-        Vector3 rot = transform.rotation.eulerAngles;
-        rot = new Vector3(90, 0, 180);
-
-        if (transform.rotation == Quaternion.Euler(90, 0, 0))
-        {
-            transform.rotation = Quaternion.Euler(rot);
-        }
-        // rb.MovePosition(transform.position + (banderaAliada.position - transform.position).normalized * speed * Time.deltaTime);
-        transform.Translate(Vector3.right * actualSpeed * Time.deltaTime);
+        target = allyFlag;
     }
 }
