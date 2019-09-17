@@ -159,9 +159,9 @@ MonoBehaviour:
   attackDistance: 18
   chaseDistance: 18
   lookDistance: 18
+  attackSpeed: 0.5
   maxHealth: 15
   speed: 5
-  fireRate: 0
   damage: 5
   enemyFlag: {fileID: 861469700}
   allyFlag: {fileID: 989776382}
@@ -273,9 +273,9 @@ MonoBehaviour:
   attackDistance: 18
   chaseDistance: 18
   lookDistance: 18
+  attackSpeed: 0.5
   maxHealth: 15
   speed: 5
-  fireRate: 0
   damage: 5
   enemyFlag: {fileID: 989776382}
   allyFlag: {fileID: 861469700}
@@ -564,9 +564,9 @@ MonoBehaviour:
   attackDistance: 18
   chaseDistance: 18
   lookDistance: 18
+  attackSpeed: 0.5
   maxHealth: 15
   speed: 5
-  fireRate: 0
   damage: 5
   enemyFlag: {fileID: 861469700}
   allyFlag: {fileID: 989776382}
@@ -1066,9 +1066,9 @@ MonoBehaviour:
   attackDistance: 18
   chaseDistance: 18
   lookDistance: 18
+  attackSpeed: 0.5
   maxHealth: 15
   speed: 5
-  fireRate: 0
   damage: 5
   enemyFlag: {fileID: 861469700}
   allyFlag: {fileID: 989776382}
@@ -1257,7 +1257,7 @@ GameObject:
   - component: {fileID: 1367738095}
   - component: {fileID: 1367738096}
   m_Layer: 0
-  m_Name: EnemyManager
+  m_Name: AiManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1454,6 +1454,10 @@ Prefab:
       value: 
       objectReference: {fileID: 114760801589572506, guid: 0695caa36118ace4498f87aa0cad123e,
         type: 2}
+    - target: {fileID: 1262006515728966, guid: c5bdb280375e7434c98ebcb9bd205bcc, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c5bdb280375e7434c98ebcb9bd205bcc, type: 2}
   m_IsPrefabParent: 0
@@ -1548,9 +1552,9 @@ MonoBehaviour:
   attackDistance: 18
   chaseDistance: 18
   lookDistance: 18
+  attackSpeed: 0.5
   maxHealth: 15
   speed: 5
-  fireRate: 0
   damage: 5
   enemyFlag: {fileID: 989776382}
   allyFlag: {fileID: 861469700}

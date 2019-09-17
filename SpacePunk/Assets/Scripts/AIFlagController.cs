@@ -14,6 +14,14 @@ public class AIFlagController : AIController
     private bool hasFlag;
     private bool isGoingToFlag;
     private bool flagIsSecured;
+    private Vector3 enemyFlagPosition;
+    private Vector3 alliedFlagPosition;
+
+  /* protected override void Start()
+    {
+        enemyFlagPosition = enemyFlag.transform.position;
+        alliedFlagPosition = allyFlag.transform.position;
+    }*/
 
     protected override void Update()
     {
@@ -73,6 +81,7 @@ public class AIFlagController : AIController
             }
             isGoingToFlag = false;
             flagIsSecured = true;
+           //GameManager.Instance.ResetFlag(enemyFlagPosition, alliedFlagPosition, enemyFlag, allyFlag);
         }
 
         if (other.transform == enemyFlag)
@@ -100,6 +109,7 @@ public class AIFlagController : AIController
 
     void ReturnFlag()
     {
+       //if (allyFlag == null || !allyFlag.gameObject.activeInHierarchy) return;
         target = allyFlag;
     }
 }

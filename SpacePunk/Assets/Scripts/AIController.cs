@@ -11,9 +11,9 @@ public class AIController : MonoBehaviour
     [SerializeField] protected float attackDistance = 18;
     [SerializeField] protected float chaseDistance = 18;
     [SerializeField] protected float lookDistance = 18;
+    [SerializeField] float attackSpeed;
     [SerializeField] int maxHealth = 15;
     [SerializeField] float speed = 2;
-    [SerializeField] float fireRate;
     [SerializeField] int damage = 5;
 
     protected Transform target;
@@ -26,6 +26,9 @@ public class AIController : MonoBehaviour
     protected int actualDamage;
     protected GameObject[] tagPlayer;
 
+    protected float remainingCooldown;
+    protected bool canShoot = true;
+
     public int ActualHealth { get { return actualHealth; } set { actualHealth = value; } }
     public float ActualSpeed { get { return actualSpeed; } }
     public Team Team { get { return team; } }
@@ -35,9 +38,10 @@ public class AIController : MonoBehaviour
         actualHealth = maxHealth;
         actualSpeed = speed;
         actualDamage = damage;
+        remainingCooldown = attackSpeed;
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         initialPosition = transform.position;    
     }
@@ -46,6 +50,15 @@ public class AIController : MonoBehaviour
     {
         if(target != null && target.gameObject.activeInHierarchy)
             transform.position += (target.position - transform.position).normalized * actualSpeed * Time.deltaTime;
+
+        if (canShoot) return;
+
+        remainingCooldown += Time.deltaTime;
+
+        if (remainingCooldown >= attackSpeed) canShoot = true;
+
+        if (target == null || !target.gameObject.activeInHierarchy)
+            ChooseTarget();
     }
 
     public virtual void SetShip(List<AIController> targets)
@@ -97,8 +110,11 @@ public class AIController : MonoBehaviour
 
     public void Attack()
     {
+        if (!canShoot) return;
         var bullet1 = Instantiate(bulletPrefab, shotSpawn.position, shotSpawn.rotation);
         bullet1.SetBullet(actualDamage, (target.position - transform.position).normalized);
+        canShoot = false;
+        remainingCooldown = 0;
     }
 }
 
