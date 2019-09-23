@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class FlagGameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
+    public static FlagGameManager Instance { get; private set; }
 
     private void Awake()
     {
@@ -14,8 +14,8 @@ public class GameManager : MonoBehaviour
 
     public void ResetFlag(Vector3 enemyFlagPos, Vector3 alliedFlagPos, Transform enemyFlag, Transform alliedFlag)
     {
-        enemyFlag.transform.position = enemyFlagPos;
-        alliedFlag.transform.position = alliedFlagPos;
+        enemyFlag.position = enemyFlagPos;
+        alliedFlag.position = alliedFlagPos;
         alliedFlag.gameObject.SetActive(true);
         enemyFlag.gameObject.SetActive(true);
     }

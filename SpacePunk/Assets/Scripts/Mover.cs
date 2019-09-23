@@ -36,6 +36,6 @@ public class Mover : MonoBehaviour
             if(aiToDamage != null)
                 aiToDamage.TakeDamage(damage);
         }
-        Destroy(gameObject);
+        PoolManager.GetInstance().TurnOffByName("PlayerBullet",this);
     }
 }

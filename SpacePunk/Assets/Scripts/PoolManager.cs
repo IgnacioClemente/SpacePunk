@@ -5,9 +5,9 @@ using UnityEngine;
 public class PoolManager : MonoBehaviour {
 
     [SerializeField] static PoolManager poolManagerAux;
-    [SerializeField] private Pool[] array;
+    [SerializeField] private BulletPool[] array;
     [SerializeField] private Vector3 num;
-    GameObject[] arrayGameObject;
+    Mover[] arrayGameObject;
     Vector3 pos;
     Transform parent;
     
@@ -40,7 +40,7 @@ public class PoolManager : MonoBehaviour {
         InicializePool();
     }
 
-    public GameObject CallByName(string name)
+    public Mover CallByName(string name)
     {
         //recorro el array y obtengo el nombre y lo comparo y luego lo retorno si no encontre retorno null
         for(int i = 0; i < array.Length;i++)
@@ -48,14 +48,14 @@ public class PoolManager : MonoBehaviour {
             if (array[i].GetName() == name)
             {
                 var auxObject = array[i].GetObject(transform.position, transform);
-                auxObject.SetActive(true);
+                auxObject.gameObject.SetActive(true);
                 return auxObject;
             }
         }
         return null;
     }
 
-    public void TurnOffByName(string name, GameObject objectToTurnOff)
+    public void TurnOffByName(string name, Mover objectToTurnOff)
     {
         //Recorro los pools hasta encontrar el correcto
         for (int i = 0; i < array.Length; i++)

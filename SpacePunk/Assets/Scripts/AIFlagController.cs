@@ -17,11 +17,12 @@ public class AIFlagController : AIController
     private Vector3 enemyFlagPosition;
     private Vector3 alliedFlagPosition;
 
-  /* protected override void Start()
+    protected override void Start()
     {
-        enemyFlagPosition = enemyFlag.transform.position;
-        alliedFlagPosition = allyFlag.transform.position;
-    }*/
+        enemyFlagPosition = enemyFlag.position;
+        alliedFlagPosition = allyFlag.position;
+        base.Start();
+    }
 
     protected override void Update()
     {
@@ -31,7 +32,7 @@ public class AIFlagController : AIController
         LookAtTarget();
         if (isInChargeOfTakingFlag)
         {
-            if (hasFlag == false)
+            if (!hasFlag)
             {
                 CaptureFlag();
             }
@@ -60,11 +61,8 @@ public class AIFlagController : AIController
 
     public void CaptureFlag()
     {
-        if (flagIsSecured == false)
-        {
-            isGoingToFlag = true;
-            target = enemyFlag;
-        }
+        isGoingToFlag = true;
+        target = enemyFlag;
     }
 
     void OnTriggerEnter(Collider other)
@@ -81,7 +79,7 @@ public class AIFlagController : AIController
             }
             isGoingToFlag = false;
             flagIsSecured = true;
-           //GameManager.Instance.ResetFlag(enemyFlagPosition, alliedFlagPosition, enemyFlag, allyFlag);
+           FlagGameManager.Instance.ResetFlag(enemyFlagPosition, alliedFlagPosition, enemyFlag, allyFlag);
         }
 
         if (other.transform == enemyFlag)
@@ -99,8 +97,18 @@ public class AIFlagController : AIController
         actualHealth -= damage;
         if (actualHealth <= 0)
         {
-            if(isInChargeOfTakingFlag)
+            if (isInChargeOfTakingFlag)
+            {
+                isInChargeOfTakingFlag = false;
                 AIManager.Instance.FlagCarrierDied(this);
+                if (hasFlag)
+                {
+                    enemyFlagPosition = transform.position;
+                    enemyFlag.transform.position = enemyFlagPosition;
+                    enemyFlag.gameObject.SetActive(true);
+                    hasFlag = false;
+                }
+            }
 
             gameObject.SetActive(false);
             Invoke("Respawn", 5f);
@@ -109,7 +117,33 @@ public class AIFlagController : AIController
 
     void ReturnFlag()
     {
-       //if (allyFlag == null || !allyFlag.gameObject.activeInHierarchy) return;
-        target = allyFlag;
+        //si quiero capturar la bandera enemiga y la mia no esta disponible voy a pelear
+        if (allyFlag == null || !allyFlag.gameObject.activeInHierarchy)
+        {
+            target = FindEnemyFlagCarrier();
+        }
+        else
+            target = allyFlag;
+    }
+
+    public Transform FindEnemyFlagCarrier()
+    {
+        for (int i = 0; i < possibleTargets.Count; i++)
+        {
+            var auxAI = possibleTargets[i].GetComponent<AIFlagController>();
+
+            if (auxAI != null)
+            {
+                if (auxAI.isInChargeOfTakingFlag)
+                    return auxAI.transform;
+            }
+            else
+            {
+                var auxPlayer = possibleTargets[i].GetComponent<PlayerController>();
+                if (auxPlayer != null && auxPlayer.HasFlag)
+                    return auxPlayer.transform;
+            }
+        }
+        return null;
     }
 }

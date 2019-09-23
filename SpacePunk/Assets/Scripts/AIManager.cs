@@ -42,6 +42,8 @@ public class AIManager : MonoBehaviour
         int alliedRdm = Random.Range(0, alliedShips.Count);
         alliedShips[alliedRdm].GetComponent<AIFlagController>().isInChargeOfTakingFlag = true;
 
+        //Test
+        Time.timeScale = 4;
     }
 
     public void FlagCarrierDied(AIController ship)
@@ -50,7 +52,7 @@ public class AIManager : MonoBehaviour
         if (ship.Team == Team.Enemy)
         {
             int rdm = Random.Range(0, enemyShips.Count);
-            if (enemyShips[rdm] == ship)
+            if (enemyShips[rdm] == ship || !enemyShips[rdm].gameObject.activeSelf)
                 FlagCarrierDied(ship);
 
             enemyShips[rdm].GetComponent<AIFlagController>().isInChargeOfTakingFlag = true;

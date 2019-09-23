@@ -23,9 +23,11 @@ public class PlayerController : MonoBehaviour
     private float accelerationForce;
     private int actualDamage;
     private Vector3 initialPosition;
+    private bool hasFlag;
 
     public int ActualHealth { get { return actualHealth; } set { actualHealth = value; } }
     public float ActualSpeed { get { return actualSpeed; } }
+    public bool HasFlag { get { return hasFlag; } }
 
 
     private void Awake()
@@ -53,16 +55,17 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButton(0) && Time.time > nextFireSingle)
         {
             nextFireSingle = Time.time + fireRateSingle;
-            var bullet1 = Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
-            bullet1.SetBullet(actualDamage, (shotSpawn.position - transform.position).normalized);
+            Mover bullet1 = PoolManager.GetInstance().CallByName("PlayerBullet");
+            bullet1.SetBullet(actualDamage, -transform.right);
         }
         if(Input.GetMouseButton(1) && Time.time > nextFireDouble)
         {
             nextFireDouble = Time.time + fireRateDouble;
-            var bullet1 = Instantiate(shot, shotSpawn_1.position, shotSpawn_1.rotation);
-            var bullet2 = Instantiate(shot, shotSpawn_2.position, shotSpawn_2.rotation);
-            bullet1.SetBullet(actualDamage, (shotSpawn_1.position - transform.position).normalized);
-            bullet2.SetBullet(actualDamage, (shotSpawn_2.position - transform.position).normalized);
+            Mover bullet1 = PoolManager.GetInstance().CallByName("PlayerBullet");
+            Mover bullet2 = PoolManager.GetInstance().CallByName("PlayerBullet");
+
+            bullet1.SetBullet(actualDamage, -transform.right);
+            bullet2.SetBullet(actualDamage, -transform.right);
         }
     }
 

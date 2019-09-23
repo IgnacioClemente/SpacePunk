@@ -28,6 +28,7 @@ public class AIController : MonoBehaviour
 
     protected float remainingCooldown;
     protected bool canShoot = true;
+    protected bool wait;
 
     public int ActualHealth { get { return actualHealth; } set { actualHealth = value; } }
     public float ActualSpeed { get { return actualSpeed; } }
@@ -48,17 +49,23 @@ public class AIController : MonoBehaviour
 
     protected virtual void Update()
     {
-        if(target != null && target.gameObject.activeInHierarchy)
+        if(wait)
+        {
+            CheckAvailableTargets();
+            return; 
+        }
+
+        if (target != null && target.gameObject.activeSelf)
             transform.position += (target.position - transform.position).normalized * actualSpeed * Time.deltaTime;
+        else
+            CheckAvailableTargets();
 
         if (canShoot) return;
 
         remainingCooldown += Time.deltaTime;
 
-        if (remainingCooldown >= attackSpeed) canShoot = true;
-
-        if (target == null || !target.gameObject.activeInHierarchy)
-            ChooseTarget();
+        if (remainingCooldown >= attackSpeed)
+            canShoot = true;
     }
 
     public virtual void SetShip(List<AIController> targets)
@@ -72,7 +79,27 @@ public class AIController : MonoBehaviour
         if (team == Team.Enemy)
             possibleTargets.Add(player.transform);
 
-        ChooseTarget();
+        CheckAvailableTargets();
+    }
+
+    public void CheckAvailableTargets()
+    {
+        bool targetAvailable = false;
+        for (int i = 0; i < possibleTargets.Count; i++)
+        {
+            if (possibleTargets[i].gameObject.activeSelf)
+            {
+                targetAvailable = true;
+                wait = false;
+                break;
+            }
+        }
+
+        if (targetAvailable)
+            ChooseTarget();
+        else
+            wait = true;
+           
     }
 
     public void ChooseTarget()
