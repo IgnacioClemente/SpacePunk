@@ -9,6 +9,7 @@ public class AIFlagController : AIController
     [SerializeField] float pickUpDistance = 50;
 
     public bool isInChargeOfTakingFlag;
+    public bool flagIsDropped;
 
     private float flagDistance;
     private bool hasFlag;
@@ -16,6 +17,7 @@ public class AIFlagController : AIController
     private bool flagIsSecured;
     private Vector3 enemyFlagPosition;
     private Vector3 alliedFlagPosition;
+    private float timer = 4f;
 
     protected override void Start()
     {
@@ -65,7 +67,7 @@ public class AIFlagController : AIController
         target = enemyFlag;
     }
 
-    void OnTriggerEnter(Collider other)
+   private void OnTriggerEnter(Collider other)
     {
         if (other.transform == allyFlag)
         {
@@ -79,13 +81,14 @@ public class AIFlagController : AIController
             }
             isGoingToFlag = false;
             flagIsSecured = true;
-           FlagGameManager.Instance.ResetFlag(enemyFlagPosition, alliedFlagPosition, enemyFlag, allyFlag);
+           FlagGameManager.Instance.ResetFlagAfterCapture(enemyFlagPosition, alliedFlagPosition, enemyFlag, allyFlag);
         }
 
         if (other.transform == enemyFlag)
         {
             other.gameObject.SetActive(false);
             hasFlag = true;
+            flagIsDropped = false;
             isGoingToFlag = false;
             flagIsSecured = false;
             ReturnFlag();
@@ -100,6 +103,7 @@ public class AIFlagController : AIController
             if (isInChargeOfTakingFlag)
             {
                 isInChargeOfTakingFlag = false;
+                flagIsDropped = true;
                 AIManager.Instance.FlagCarrierDied(this);
                 if (hasFlag)
                 {
@@ -115,7 +119,7 @@ public class AIFlagController : AIController
         }
     }
 
-    void ReturnFlag()
+    public void ReturnFlag()
     {
         //si quiero capturar la bandera enemiga y la mia no esta disponible voy a pelear
         if (allyFlag == null || !allyFlag.gameObject.activeInHierarchy)
@@ -146,4 +150,19 @@ public class AIFlagController : AIController
         }
         return null;
     }
-}
+
+    public void ResetFlag()
+    {
+        if(flagIsDropped)
+            timer -= Time.deltaTime;
+
+            if(timer <= 0)
+            {
+                FlagGameManager.Instance.ResetFlagAfterTimer(enemyFlagPosition, enemyFlag);
+            }
+            else
+            {
+                FlagGameManager.Instance.ResetFlagAfterTimer(alliedFlagPosition, allyFlag);
+            }
+        }
+    }

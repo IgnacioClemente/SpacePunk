@@ -12,11 +12,17 @@ public class FlagGameManager : MonoBehaviour
         Instance = this;
     }
 
-    public void ResetFlag(Vector3 enemyFlagPos, Vector3 alliedFlagPos, Transform enemyFlag, Transform alliedFlag)
+    public void ResetFlagAfterCapture(Vector3 enemyFlagPos, Vector3 alliedFlagPos, Transform enemyFlag, Transform alliedFlag)
     {
         enemyFlag.position = enemyFlagPos;
         alliedFlag.position = alliedFlagPos;
         alliedFlag.gameObject.SetActive(true);
         enemyFlag.gameObject.SetActive(true);
+    }
+
+    public void ResetFlagAfterTimer(Vector3 pos, Transform flag)
+    {
+        flag.position = pos;
+        flag.gameObject.SetActive(true);
     }
 }

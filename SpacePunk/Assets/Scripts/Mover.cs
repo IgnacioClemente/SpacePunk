@@ -10,7 +10,7 @@ public class Mover : MonoBehaviour
     private int damage;
     private Vector3 dir;
 
-    void Start()
+   private void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.velocity = dir * speed;
@@ -36,6 +36,6 @@ public class Mover : MonoBehaviour
             if(aiToDamage != null)
                 aiToDamage.TakeDamage(damage);
         }
-        PoolManager.GetInstance().TurnOffByName("PlayerBullet",this);
+        //PoolManager.GetInstance().TurnOffByName("PlayerBullet",this);
     }
 }

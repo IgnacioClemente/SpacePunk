@@ -220,7 +220,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &448394010
 Transform:
   m_ObjectHideFlags: 0
@@ -262,6 +262,7 @@ MonoBehaviour:
   allyFlag: {fileID: 989776382}
   pickUpDistance: 50
   isInChargeOfTakingFlag: 0
+  flagIsDropped: 0
 --- !u!136 &448394012
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -376,6 +377,7 @@ MonoBehaviour:
   allyFlag: {fileID: 861469700}
   pickUpDistance: 50
   isInChargeOfTakingFlag: 0
+  flagIsDropped: 0
 --- !u!136 &490244468
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -662,6 +664,7 @@ MonoBehaviour:
   allyFlag: {fileID: 989776382}
   pickUpDistance: 50
   isInChargeOfTakingFlag: 0
+  flagIsDropped: 0
 --- !u!136 &631077869
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1312,7 +1315,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1264744212
 Transform:
   m_ObjectHideFlags: 0
@@ -1354,6 +1357,7 @@ MonoBehaviour:
   allyFlag: {fileID: 989776382}
   pickUpDistance: 50
   isInChargeOfTakingFlag: 0
+  flagIsDropped: 0
 --- !u!136 &1264744214
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1803,7 +1807,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1660868445
 Transform:
   m_ObjectHideFlags: 0
@@ -1845,6 +1849,7 @@ MonoBehaviour:
   allyFlag: {fileID: 861469700}
   pickUpDistance: 50
   isInChargeOfTakingFlag: 0
+  flagIsDropped: 0
 --- !u!136 &1660868447
 CapsuleCollider:
   m_ObjectHideFlags: 0

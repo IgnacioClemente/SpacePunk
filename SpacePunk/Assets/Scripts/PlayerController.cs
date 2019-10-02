@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
         initialPosition = transform.position;
     }
 
-    void Update()
+   private void Update()
     {
         if (!isActiveAndEnabled) return;
 
@@ -55,8 +55,8 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButton(0) && Time.time > nextFireSingle)
         {
             nextFireSingle = Time.time + fireRateSingle;
-            Mover bullet1 = PoolManager.GetInstance().CallByName("PlayerBullet");
-            bullet1.SetBullet(actualDamage, -transform.right);
+            Mover bullet = PoolManager.GetInstance().CallByName("PlayerBullet");
+            bullet.SetBullet(actualDamage, -transform.right);
         }
         if(Input.GetMouseButton(1) && Time.time > nextFireDouble)
         {
@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
      {
          if (other.gameObject.CompareTag("EnemyFlag"))
          {
