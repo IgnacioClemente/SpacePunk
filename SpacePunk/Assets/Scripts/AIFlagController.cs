@@ -4,27 +4,14 @@ using UnityEngine;
 
 public class AIFlagController : AIController
 {
-    [SerializeField] Transform enemyFlag;
-    [SerializeField] Transform allyFlag;
+    [SerializeField] FlagBehavior enemyFlag;
+    [SerializeField] FlagBehavior allyFlag;
     [SerializeField] float pickUpDistance = 50;
 
     public bool isInChargeOfTakingFlag;
-    public bool flagIsDropped;
 
     private float flagDistance;
     private bool hasFlag;
-    private bool isGoingToFlag;
-    private bool flagIsSecured;
-    private Vector3 enemyFlagPosition;
-    private Vector3 alliedFlagPosition;
-    private float timer = 4f;
-
-    protected override void Start()
-    {
-        enemyFlagPosition = enemyFlag.position;
-        alliedFlagPosition = allyFlag.position;
-        base.Start();
-    }
 
     protected override void Update()
     {
@@ -63,35 +50,26 @@ public class AIFlagController : AIController
 
     public void CaptureFlag()
     {
-        isGoingToFlag = true;
-        target = enemyFlag;
+        target = enemyFlag.transform;
     }
 
    private void OnTriggerEnter(Collider other)
     {
-        if (other.transform == allyFlag)
+        if (other.transform == allyFlag.transform)
         {
-            Vector3 rot = transform.rotation.eulerAngles;
-            rot = new Vector3(90, 0, 0);
-            hasFlag = false;
-
-            if (transform.rotation == Quaternion.Euler(90, 0, 180))
+            if (hasFlag)
             {
-                transform.rotation = Quaternion.Euler(rot);
+                hasFlag = false;
+                enemyFlag.ResetFlag();
             }
-            isGoingToFlag = false;
-            flagIsSecured = true;
-           FlagGameManager.Instance.ResetFlagAfterCapture(enemyFlagPosition, alliedFlagPosition, enemyFlag, allyFlag);
+            else
+                allyFlag.ResetFlag();
         }
 
-        if (other.transform == enemyFlag)
+        if (other.transform == enemyFlag.transform)
         {
-            other.gameObject.SetActive(false);
+            enemyFlag.CaptureFlag();
             hasFlag = true;
-            flagIsDropped = false;
-            isGoingToFlag = false;
-            flagIsSecured = false;
-            ReturnFlag();
         }
     }
 
@@ -103,13 +81,10 @@ public class AIFlagController : AIController
             if (isInChargeOfTakingFlag)
             {
                 isInChargeOfTakingFlag = false;
-                flagIsDropped = true;
                 AIManager.Instance.FlagCarrierDied(this);
                 if (hasFlag)
                 {
-                    enemyFlagPosition = transform.position;
-                    enemyFlag.transform.position = enemyFlagPosition;
-                    enemyFlag.gameObject.SetActive(true);
+                    enemyFlag.DropFlag(transform.position);
                     hasFlag = false;
                 }
             }
@@ -127,7 +102,7 @@ public class AIFlagController : AIController
             target = FindEnemyFlagCarrier();
         }
         else
-            target = allyFlag;
+            target = allyFlag.transform;
     }
 
     public Transform FindEnemyFlagCarrier()
@@ -150,19 +125,4 @@ public class AIFlagController : AIController
         }
         return null;
     }
-
-    public void ResetFlag()
-    {
-        if(flagIsDropped)
-            timer -= Time.deltaTime;
-
-            if(timer <= 0)
-            {
-                FlagGameManager.Instance.ResetFlagAfterTimer(enemyFlagPosition, enemyFlag);
-            }
-            else
-            {
-                FlagGameManager.Instance.ResetFlagAfterTimer(alliedFlagPosition, allyFlag);
-            }
-        }
-    }
+}

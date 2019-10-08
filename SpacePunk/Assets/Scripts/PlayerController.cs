@@ -55,14 +55,14 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButton(0) && Time.time > nextFireSingle)
         {
             nextFireSingle = Time.time + fireRateSingle;
-            Mover bullet = PoolManager.GetInstance().CallByName("PlayerBullet");
+            Mover bullet = Instantiate(shot, shotSpawn.transform.position, shot.transform.rotation);
             bullet.SetBullet(actualDamage, -transform.right);
         }
         if(Input.GetMouseButton(1) && Time.time > nextFireDouble)
         {
             nextFireDouble = Time.time + fireRateDouble;
-            Mover bullet1 = PoolManager.GetInstance().CallByName("PlayerBullet");
-            Mover bullet2 = PoolManager.GetInstance().CallByName("PlayerBullet");
+            Mover bullet1 = Instantiate(shot, shotSpawn_1.transform.position, shot.transform.rotation);
+            Mover bullet2 = Instantiate(shot, shotSpawn_2.transform.position, shot.transform.rotation);
 
             bullet1.SetBullet(actualDamage, -transform.right);
             bullet2.SetBullet(actualDamage, -transform.right);

@@ -20,6 +20,8 @@ public class Mover : MonoBehaviour
     {
         this.damage = damage;
         this.dir = dir;
+
+        Destroy(gameObject, 5f);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -36,6 +38,6 @@ public class Mover : MonoBehaviour
             if(aiToDamage != null)
                 aiToDamage.TakeDamage(damage);
         }
-        //PoolManager.GetInstance().TurnOffByName("PlayerBullet",this);
+        Destroy(gameObject);
     }
 }

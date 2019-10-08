@@ -258,11 +258,10 @@ MonoBehaviour:
   maxHealth: 15
   speed: 5
   damage: 5
-  enemyFlag: {fileID: 861469700}
-  allyFlag: {fileID: 989776382}
+  enemyFlag: {fileID: 861469702}
+  allyFlag: {fileID: 989776384}
   pickUpDistance: 50
   isInChargeOfTakingFlag: 0
-  flagIsDropped: 0
 --- !u!136 &448394012
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -335,7 +334,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &490244466
 Transform:
   m_ObjectHideFlags: 0
@@ -373,11 +372,10 @@ MonoBehaviour:
   maxHealth: 15
   speed: 5
   damage: 5
-  enemyFlag: {fileID: 989776382}
-  allyFlag: {fileID: 861469700}
+  enemyFlag: {fileID: 989776384}
+  allyFlag: {fileID: 861469702}
   pickUpDistance: 50
   isInChargeOfTakingFlag: 0
-  flagIsDropped: 0
 --- !u!136 &490244468
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -660,11 +658,10 @@ MonoBehaviour:
   maxHealth: 15
   speed: 5
   damage: 5
-  enemyFlag: {fileID: 861469700}
-  allyFlag: {fileID: 989776382}
+  enemyFlag: {fileID: 861469702}
+  allyFlag: {fileID: 989776384}
   pickUpDistance: 50
-  isInChargeOfTakingFlag: 0
-  flagIsDropped: 0
+  isInChargeOfTakingFlag: 1
 --- !u!136 &631077869
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -928,6 +925,7 @@ GameObject:
   - component: {fileID: 861469697}
   - component: {fileID: 861469696}
   - component: {fileID: 861469701}
+  - component: {fileID: 861469702}
   m_Layer: 0
   m_Name: PlayerFlag
   m_TagString: PlayerFlag
@@ -1025,6 +1023,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &861469702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 861469695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 066c9c489ac64dc47a65954c3f3a7faa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myTeam: 0
 --- !u!4 &906864826 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4512043195981258, guid: 840883f8f6a995041931cd52e9592d3f,
@@ -1043,6 +1053,7 @@ GameObject:
   - component: {fileID: 989776379}
   - component: {fileID: 989776378}
   - component: {fileID: 989776383}
+  - component: {fileID: 989776384}
   m_Layer: 0
   m_Name: EnemyFlag
   m_TagString: EnemyFlag
@@ -1140,6 +1151,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &989776384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 989776377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 066c9c489ac64dc47a65954c3f3a7faa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myTeam: 1
 --- !u!114 &1062181062 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114348696995066826, guid: c5bdb280375e7434c98ebcb9bd205bcc,
@@ -1353,11 +1376,10 @@ MonoBehaviour:
   maxHealth: 15
   speed: 5
   damage: 5
-  enemyFlag: {fileID: 861469700}
-  allyFlag: {fileID: 989776382}
+  enemyFlag: {fileID: 861469702}
+  allyFlag: {fileID: 989776384}
   pickUpDistance: 50
   isInChargeOfTakingFlag: 0
-  flagIsDropped: 0
 --- !u!136 &1264744214
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1807,7 +1829,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1660868445
 Transform:
   m_ObjectHideFlags: 0
@@ -1845,11 +1867,10 @@ MonoBehaviour:
   maxHealth: 15
   speed: 5
   damage: 5
-  enemyFlag: {fileID: 989776382}
-  allyFlag: {fileID: 861469700}
+  enemyFlag: {fileID: 989776384}
+  allyFlag: {fileID: 861469702}
   pickUpDistance: 50
   isInChargeOfTakingFlag: 0
-  flagIsDropped: 0
 --- !u!136 &1660868447
 CapsuleCollider:
   m_ObjectHideFlags: 0
