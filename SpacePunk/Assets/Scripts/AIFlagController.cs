@@ -12,40 +12,49 @@ public class AIFlagController : AIController
 
     private float flagDistance;
     private bool hasFlag;
+   // private bool paused;
+   //private bool resume;
+   //private float timer = 3f;
 
     protected override void Update()
     {
+        //timer -= Time.deltaTime;
         if (!isActiveAndEnabled) return;
 
-        targetDistance = Vector3.Distance(target.transform.position, transform.position);
-        LookAtTarget();
-        if (isInChargeOfTakingFlag)
-        {
-            if (!hasFlag)
+            targetDistance = Vector3.Distance(target.transform.position, transform.position);
+            LookAtTarget();
+            if (isInChargeOfTakingFlag)
             {
-                CaptureFlag();
+                if (team == Team.Ally && player.HasFlag == true)
+                {
+                    isInChargeOfTakingFlag = false;
+                    return;
+                }
+                if (!hasFlag)
+                {
+                    CaptureFlag();
+                }
+                else
+                    ReturnFlag();
             }
             else
-                ReturnFlag();
-        }
-        else
-        {
-            if (target != null)
             {
-                if (targetDistance < chaseDistance)
+                if (target != null)
                 {
-                    if (targetDistance > attackDistance)
+                    if (targetDistance < chaseDistance)
                     {
-                        ChaseTarget();
-                    }
-                    else
-                    {
-                        Attack();
+                        if (targetDistance > attackDistance)
+                        {
+                            ChaseTarget();
+                        }
+                        else
+                        {
+                            Attack();
+                        }
                     }
                 }
             }
-        }
-        base.Update();
+            base.Update();
     }
 
     public void CaptureFlag()
@@ -57,8 +66,9 @@ public class AIFlagController : AIController
     {
         if (other.transform == allyFlag.transform)
         {
-            if (hasFlag)
+            if (hasFlag && !allyFlag.Captured)
             {
+                FlagGameManager.Instance.ScoreUp(this.team);
                 hasFlag = false;
                 enemyFlag.ResetFlag();
             }
@@ -78,18 +88,20 @@ public class AIFlagController : AIController
         actualHealth -= damage;
         if (actualHealth <= 0)
         {
+            gameObject.SetActive(false);
             if (isInChargeOfTakingFlag)
             {
                 isInChargeOfTakingFlag = false;
-                AIManager.Instance.FlagCarrierDied(this);
+
                 if (hasFlag)
                 {
                     enemyFlag.DropFlag(transform.position);
                     hasFlag = false;
                 }
-            }
 
-            gameObject.SetActive(false);
+                gameObject.SetActive(false);
+                AIManager.Instance.FlagCarrierDied(this);
+            }
             Invoke("Respawn", 5f);
         }
     }
@@ -100,6 +112,17 @@ public class AIFlagController : AIController
         if (allyFlag == null || !allyFlag.gameObject.activeInHierarchy)
         {
             target = FindEnemyFlagCarrier();
+            if (targetDistance < chaseDistance)
+            {
+                if (targetDistance > attackDistance)
+                {
+                    ChaseTarget();
+                }
+                else
+                {
+                    Attack();
+                }
+            }
         }
         else
             target = allyFlag.transform;
@@ -118,6 +141,7 @@ public class AIFlagController : AIController
             }
             else
             {
+                
                 var auxPlayer = possibleTargets[i].GetComponent<PlayerController>();
                 if (auxPlayer != null && auxPlayer.HasFlag)
                     return auxPlayer.transform;
@@ -125,4 +149,14 @@ public class AIFlagController : AIController
         }
         return null;
     }
+
+    /*public void Pause()
+    {
+        paused = true;
+    }
+
+    public void Resume()
+    {
+        resume = true;
+    }*/
 }

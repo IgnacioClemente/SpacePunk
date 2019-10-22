@@ -8,6 +8,7 @@ public class FlagBehavior : MonoBehaviour
 
     private Vector3 initialPosition;
     private bool captured;
+    private float time = 3f;
 
     public bool Captured { get { return captured;} }
 
@@ -37,7 +38,6 @@ public class FlagBehavior : MonoBehaviour
     public void DropFlag(Vector3 position)
     {
         transform.position = position;
-        captured = false;
         gameObject.SetActive(true);
     }
 }

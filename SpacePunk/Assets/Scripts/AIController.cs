@@ -122,6 +122,7 @@ public class AIController : MonoBehaviour
     public void Respawn()
     {
         transform.position = initialPosition;
+        actualHealth = maxHealth;
         gameObject.SetActive(true);
     }
 

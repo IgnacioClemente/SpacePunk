@@ -7,9 +7,11 @@ public class AIManager : MonoBehaviour
     List<AIController> enemyShips;
     List<AIController> alliedShips;
 
+    [SerializeField] PlayerController player;
+
     public static AIManager Instance { get; private set; }
 
-   private void Awake()
+    private void Awake()
     {
         if (Instance != null) Destroy(this);
 
@@ -21,7 +23,7 @@ public class AIManager : MonoBehaviour
         foreach (Transform child in transform)
         {
             var ship = child.GetComponent<AIController>();
-            if(ship.Team == Team.Enemy)
+            if (ship.Team == Team.Enemy)
                 enemyShips.Add(ship);
             else
                 alliedShips.Add(ship);
@@ -35,15 +37,27 @@ public class AIManager : MonoBehaviour
         {
             alliedShips[i].SetShip(enemyShips);
         }
-        
-        int rdm = Random.Range(0, enemyShips.Count);
-        enemyShips[rdm].GetComponent<AIFlagController>().isInChargeOfTakingFlag = true;
 
-        int alliedRdm = Random.Range(0, alliedShips.Count);
-        alliedShips[alliedRdm].GetComponent<AIFlagController>().isInChargeOfTakingFlag = true;
+        for (int i = 0; i < enemyShips.Count; i++)
+        {
+            if (enemyShips[i].gameObject.activeInHierarchy)
+            {
+                enemyShips[i].GetComponent<AIFlagController>().isInChargeOfTakingFlag = true;
+                break;
+            }
+        }
+
+        for (int i = 0; i < alliedShips.Count; i++)
+        {
+            if (alliedShips[i].gameObject.activeInHierarchy)
+            {
+                alliedShips[i].GetComponent<AIFlagController>().isInChargeOfTakingFlag = true;
+                break;
+            }
+        }
 
         //Test
-        Time.timeScale = 4;
+        Time.timeScale = 2;
     }
 
     public void FlagCarrierDied(AIController ship)
@@ -51,20 +65,70 @@ public class AIManager : MonoBehaviour
         //enemyShips.Remove(ship);
         if (ship.Team == Team.Enemy)
         {
-            int rdm = Random.Range(0, enemyShips.Count);
-            if (enemyShips[rdm] == ship || !enemyShips[rdm].gameObject.activeSelf)
-                FlagCarrierDied(ship);
-
-            enemyShips[rdm].GetComponent<AIFlagController>().isInChargeOfTakingFlag = true;
+            for (int i = 0; i < enemyShips.Count; i++)
+            {
+                if (enemyShips[i].gameObject.activeInHierarchy)
+                {
+                    enemyShips[i].GetComponent<AIFlagController>().isInChargeOfTakingFlag = true;
+                    return;
+                }
+            }
         }
         else
         {
-            int rdm = Random.Range(0, alliedShips.Count);
-            if (alliedShips[rdm] == ship)
-                FlagCarrierDied(ship);
-
-            alliedShips[rdm].GetComponent<AIFlagController>().isInChargeOfTakingFlag = true;
-
+            for (int i = 0; i < alliedShips.Count; i++)
+            {
+                if (alliedShips[i].gameObject.activeInHierarchy)
+                {
+                    alliedShips[i].GetComponent<AIFlagController>().isInChargeOfTakingFlag = true;
+                    return;
+                }
+            }
         }
+        //si no encontro nave, ya sea enemigo o aliado, espera unos segundos y vuelve a intentar
+        StartCoroutine(SetNewFlagCarrier(0.5f, ship));
+    }
+
+    IEnumerator SetNewFlagCarrier(float delay, AIController ship)
+    {
+        yield return new WaitForSeconds(delay);
+        FlagCarrierDied(ship);
     }
 }
+
+   /* public void PauseGame()
+    {
+        for (int i = 0; i < alliedShips.Count; i++)
+        {
+            alliedShips[i].GetComponent<AIFlagController>().Pause();
+        }
+        for (int i = 0; i < enemyShips.Count; i++)
+        {
+            enemyShips[i].GetComponent<AIFlagController>().Pause();
+        }
+        player.Pause();
+    }
+
+    public void ResumeGame()
+    {
+        for (int i = 0; i < alliedShips.Count; i++)
+        {
+            alliedShips[i].GetComponent<AIFlagController>().Resume();
+        }
+        for (int i = 0; i < enemyShips.Count; i++)
+        {
+            enemyShips[i].GetComponent<AIFlagController>().Resume();
+        }
+        player.Resume();
+    }
+}
+
+public interface IPaussable
+{
+    void Pause();
+}
+
+public interface IResume
+{
+    void Resume();
+}*/
