@@ -33,14 +33,8 @@ public class AIBombController : AIController
 
     protected override void Update()
     {
-        if (isInChargeOfDefusingBomb && isInChargeOfPlantingBomb)
-        {
-            isInChargeOfDefusingBomb = false;
-            AIBombManager.Instance.DefuseCarrierDied(this);
-        }
         plantText.text = ((int)timeToPlant).ToString();
         defuseText.text = ((int)timeToDefuse).ToString();
-        Debug.Log(targetDistance);
         //timer -= Time.deltaTime;
         if (!isActiveAndEnabled) return;
 
@@ -79,17 +73,6 @@ public class AIBombController : AIController
                     isInChargeOfPlantingBomb = false;
                     isPlanting = false;
                     timeToPlant = 3f;
-                    if (targetDistance < chaseDistance)
-                    {
-                        if (targetDistance > attackDistance)
-                        {
-                            ChaseTarget();
-                        }
-                        else
-                        {
-                            Attack();
-                        }
-                    }
                 }
                 target = FindBombPlanter();
                 AIBombManager.Instance.BombCarrierDied(this);
@@ -125,7 +108,7 @@ public class AIBombController : AIController
                     timeToDefuse = 3f;
                 }
                 target = FindDefuser();
-                AIBombManager.Instance.BombCarrierDied(this);
+                AIBombManager.Instance.DefuseCarrierDied(this);
             }
         }
         else

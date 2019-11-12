@@ -53,7 +53,14 @@ public class AIBombManager : MonoBehaviour
         {
             if (enemyShips[i].gameObject.activeInHierarchy)
             {
-                enemyShips[i].isInChargeOfPlantingBomb = true;
+                if (enemyShips[i].isInChargeOfDefusingBomb == true)
+                {
+                    continue;
+                }
+                else
+                {
+                    enemyShips[i].isInChargeOfPlantingBomb = true;
+                }
                 break;
             }
         }
@@ -61,7 +68,14 @@ public class AIBombManager : MonoBehaviour
         {
             if (enemyShips[i].gameObject.activeInHierarchy)
             {
-                enemyShips[i].isInChargeOfDefusingBomb = true;
+                if (enemyShips[i].isInChargeOfPlantingBomb == true)
+                {
+                    continue;
+                }
+                else
+                {
+                    enemyShips[i].isInChargeOfDefusingBomb = true;
+                }
                 break;
             }
         }
@@ -70,7 +84,14 @@ public class AIBombManager : MonoBehaviour
         {
             if (alliedShips[i].gameObject.activeInHierarchy)
             {
-                alliedShips[i].isInChargeOfPlantingBomb = true;
+                if (alliedShips[i].isInChargeOfDefusingBomb == true)
+                {
+                    continue;
+                }
+                else
+                {
+                    alliedShips[i].isInChargeOfPlantingBomb = true;
+                }
                 break;
             }
         }
@@ -78,7 +99,14 @@ public class AIBombManager : MonoBehaviour
         {
             if (alliedShips[i].gameObject.activeInHierarchy)
             {
-                alliedShips[i].isInChargeOfDefusingBomb = true;
+                if (alliedShips[i].isInChargeOfPlantingBomb == true)
+                {
+                    continue;
+                } 
+                else
+                {
+                    alliedShips[i].isInChargeOfDefusingBomb = true;
+                }
                 break;
             }
         }
@@ -93,7 +121,14 @@ public class AIBombManager : MonoBehaviour
             {
                 if (enemyShips[i].gameObject.activeInHierarchy)
                 {
-                    enemyShips[i].isInChargeOfPlantingBomb = true;
+                    if(enemyShips[i].isInChargeOfDefusingBomb == true)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        enemyShips[i].isInChargeOfPlantingBomb = true;
+                    }
                     return;
                 }
             }
@@ -104,7 +139,14 @@ public class AIBombManager : MonoBehaviour
             {
                 if (alliedShips[i].gameObject.activeInHierarchy)
                 {
-                    alliedShips[i].isInChargeOfPlantingBomb = true;
+                    if(alliedShips[i].isInChargeOfDefusingBomb == true)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        alliedShips[i].isInChargeOfPlantingBomb = true;
+                    }
                     return;
                 }
             }
@@ -123,7 +165,14 @@ public class AIBombManager : MonoBehaviour
             {
                 if (enemyShips[i].gameObject.activeInHierarchy)
                 {
-                    enemyShips[i].isInChargeOfDefusingBomb = true;
+                    if(enemyShips[i].isInChargeOfPlantingBomb == true)
+                    {
+
+                    }
+                    else
+                    {
+                        enemyShips[i].isInChargeOfDefusingBomb = true;
+                    }
                     return;
                 }
             }
@@ -133,10 +182,13 @@ public class AIBombManager : MonoBehaviour
             int rdm = Random.Range(0, alliedShips.Count);
             for (int i = 0; i < alliedShips.Count; i++)
             {
-                if (alliedShips[i].gameObject.activeInHierarchy)
+                if (alliedShips[i].isInChargeOfPlantingBomb == true)
+                {
+
+                }
+                else
                 {
                     alliedShips[i].isInChargeOfDefusingBomb = true;
-                    return;
                 }
             }
         }

@@ -55,9 +55,15 @@ public class AIMonsterController : AIController
             
     }
 
-        // private bool paused;
-        //private bool resume;
-        //private float timer = 3f;
+    public override void TakeDamage(int damage)
+    {
+        base.TakeDamage(damage);
+        actualSpeed = 5;
+    }
+
+    // private bool paused;
+    //private bool resume;
+    //private float timer = 3f;
 }
 
     /*public void Pause()
