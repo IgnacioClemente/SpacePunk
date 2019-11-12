@@ -13,7 +13,7 @@ public class AIMonsterController : AIController
     {
         shootDistance = Vector2.Distance(monster.transform.position, transform.position);
         //timer -= Time.deltaTime;
-        if (!isActiveAndEnabled) return;
+        if (!isActiveAndEnabled || target == null) return;
 
         targetDistance = Vector3.Distance(target.transform.position, transform.position);
         LookAtTarget();

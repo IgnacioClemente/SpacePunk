@@ -36,7 +36,7 @@ public class AIBombController : AIController
         plantText.text = ((int)timeToPlant).ToString();
         defuseText.text = ((int)timeToDefuse).ToString();
         //timer -= Time.deltaTime;
-        if (!isActiveAndEnabled) return;
+        if (!isActiveAndEnabled || target == null) return;
 
             targetDistance = Vector3.Distance(target.transform.position, transform.position);
             LookAtTarget();

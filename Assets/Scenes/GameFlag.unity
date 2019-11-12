@@ -438,6 +438,14 @@ Prefab:
       propertyPath: m_SizeDelta.x
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 1997444707518866, guid: ba34a00d1e8b08245abcfe6c255ef797, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1554556672691236, guid: ba34a00d1e8b08245abcfe6c255ef797, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ba34a00d1e8b08245abcfe6c255ef797, type: 2}
   m_IsPrefabParent: 0
@@ -702,8 +710,8 @@ MonoBehaviour:
   attackDistance: 18
   chaseDistance: 18
   lookDistance: 18
-  attackSpeed: 0.5
-  maxHealth: 15
+  attackSpeed: 2
+  maxHealth: 30
   speed: 5
   damage: 5
   healthBar: {fileID: 305474860}
@@ -1575,6 +1583,14 @@ Prefab:
       propertyPath: m_Color.b
       value: 0.41176468
       objectReference: {fileID: 0}
+    - target: {fileID: 1997444707518866, guid: ba34a00d1e8b08245abcfe6c255ef797, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1554556672691236, guid: ba34a00d1e8b08245abcfe6c255ef797, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ba34a00d1e8b08245abcfe6c255ef797, type: 2}
   m_IsPrefabParent: 0
@@ -1824,6 +1840,14 @@ Prefab:
         type: 2}
       propertyPath: m_SizeDelta.x
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1997444707518866, guid: ba34a00d1e8b08245abcfe6c255ef797, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1554556672691236, guid: ba34a00d1e8b08245abcfe6c255ef797, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ba34a00d1e8b08245abcfe6c255ef797, type: 2}
@@ -2721,7 +2745,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -315.99988, y: 197}
+  m_AnchoredPosition: {x: -315.99985, y: 197}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1589937501
@@ -2887,6 +2911,21 @@ Prefab:
       propertyPath: HealthBar
       value: 
       objectReference: {fileID: 620435917}
+    - target: {fileID: 114348696995066826, guid: c5bdb280375e7434c98ebcb9bd205bcc,
+        type: 2}
+      propertyPath: fireRateDouble
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114348696995066826, guid: c5bdb280375e7434c98ebcb9bd205bcc,
+        type: 2}
+      propertyPath: fireRateSingle
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114348696995066826, guid: c5bdb280375e7434c98ebcb9bd205bcc,
+        type: 2}
+      propertyPath: maxHealth
+      value: 50
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c5bdb280375e7434c98ebcb9bd205bcc, type: 2}
   m_IsPrefabParent: 0
@@ -2984,8 +3023,8 @@ MonoBehaviour:
   attackDistance: 18
   chaseDistance: 18
   lookDistance: 18
-  attackSpeed: 0.5
-  maxHealth: 15
+  attackSpeed: 2
+  maxHealth: 30
   speed: 5
   damage: 5
   healthBar: {fileID: 1003544380}
@@ -3302,6 +3341,14 @@ Prefab:
       propertyPath: m_Color.b
       value: 0.41176468
       objectReference: {fileID: 0}
+    - target: {fileID: 1997444707518866, guid: ba34a00d1e8b08245abcfe6c255ef797, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1554556672691236, guid: ba34a00d1e8b08245abcfe6c255ef797, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ba34a00d1e8b08245abcfe6c255ef797, type: 2}
   m_IsPrefabParent: 0
@@ -3551,6 +3598,14 @@ Prefab:
         type: 2}
       propertyPath: m_Color.b
       value: 0.41176468
+      objectReference: {fileID: 0}
+    - target: {fileID: 1997444707518866, guid: ba34a00d1e8b08245abcfe6c255ef797, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1554556672691236, guid: ba34a00d1e8b08245abcfe6c255ef797, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ba34a00d1e8b08245abcfe6c255ef797, type: 2}
