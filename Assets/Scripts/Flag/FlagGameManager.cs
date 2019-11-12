@@ -6,11 +6,10 @@ using UnityEngine.UI;
 public class FlagGameManager : MonoBehaviour
 {
     public static FlagGameManager Instance { get; private set; }
-    [SerializeField] Text PlayerTeamScore;
-    [SerializeField] Text EnemyTeamScore;
-    [SerializeField] Text WinGame;
-    [SerializeField] private GameObject whoWonCanvas;
-    [SerializeField] Text CountDownText;
+
+    [Header("Flag Settings")]
+    [SerializeField] Text playerTeamScore;
+    [SerializeField] Text enemyTeamScore;
 
     private int enemyScore;
     private int playerScore;
@@ -25,10 +24,8 @@ public class FlagGameManager : MonoBehaviour
 
     private void Start()
     {
-        PlayerTeamScore.text = "PlayerTeamScore: " + playerScore.ToString() + "/3";
-        EnemyTeamScore.text = "EnemyTeamScore: " + enemyScore.ToString() + "/3";
-        //CountDownText.text = timer.ToString();
-        whoWonCanvas.SetActive(false);
+        playerTeamScore.text = "PlayerTeamScore: " + playerScore.ToString() + "/3";
+        enemyTeamScore.text = "EnemyTeamScore: " + enemyScore.ToString() + "/3";
     }
 
     private void Update()
@@ -41,14 +38,14 @@ public class FlagGameManager : MonoBehaviour
         if (team == Team.Enemy)
         {
             enemyScore++;
-            EnemyTeamScore.text = "EnemyTeamScore: " + enemyScore.ToString() + "/3";
+            enemyTeamScore.text = "EnemyTeamScore: " + enemyScore.ToString() + "/3";
             if (enemyScore >= 3)
                 Win(team);
         }
         else
         {
             playerScore++;
-            PlayerTeamScore.text = "PlayerTeamScore: " + playerScore.ToString() + "/3";
+            playerTeamScore.text = "PlayerTeamScore: " + playerScore.ToString() + "/3";
             if (playerScore >= 3)
                 Win(team);
         }
@@ -56,11 +53,6 @@ public class FlagGameManager : MonoBehaviour
 
     public void Win(Team team)
     {
-        if (team == Team.Ally)
-            WinGame.text = "Ganaron los aliados";
-        else
-            WinGame.text = "Ganaron los enemigos";
-        whoWonCanvas.SetActive(true);
-        Time.timeScale = 0;
+        GameManager.Instance.EndGame(team);
     }
 }

@@ -8,9 +8,6 @@ public class MonsterGameManager : MonoBehaviour
     public static MonsterGameManager Instance { get; private set; }
     [SerializeField] Text PlayerTeamScore;
     [SerializeField] Text EnemyTeamScore;
-    [SerializeField] Text WinGame;
-    [SerializeField] private GameObject whoWonCanvas;
-    //[SerializeField] Text CountDownText;
 
     private int enemyScore;
     private int playerScore;
@@ -27,8 +24,6 @@ public class MonsterGameManager : MonoBehaviour
     {
         PlayerTeamScore.text = "PlayerTeamScore: " + playerScore.ToString() + "/3";
         EnemyTeamScore.text = "EnemyTeamScore: " + enemyScore.ToString() + "/3";
-        //CountDownText.text = timer.ToString();
-        whoWonCanvas.SetActive(false);
     }
 
     private void Update()
@@ -56,11 +51,6 @@ public class MonsterGameManager : MonoBehaviour
 
     public void Win(Team team)
     {
-        if (team == Team.Ally)
-            WinGame.text = "Ganaron los aliados";
-        else
-            WinGame.text = "Ganaron los enemigos";
-        whoWonCanvas.SetActive(true);
-        Time.timeScale = 0;
+        GameManager.Instance.EndGame(team);
     }
 }

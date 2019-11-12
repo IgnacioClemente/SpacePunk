@@ -49,12 +49,19 @@ public class AIBombManager : MonoBehaviour
         {
             alliedShips[i].SetShip(tempEnemyShips);
         }
-
         for (int i = 0; i < enemyShips.Count; i++)
         {
             if (enemyShips[i].gameObject.activeInHierarchy)
             {
                 enemyShips[i].isInChargeOfPlantingBomb = true;
+                break;
+            }
+        }
+        for (int i = 0; i < enemyShips.Count; i++)
+        {
+            if (enemyShips[i].gameObject.activeInHierarchy)
+            {
+                enemyShips[i].isInChargeOfDefusingBomb = true;
                 break;
             }
         }
@@ -67,9 +74,14 @@ public class AIBombManager : MonoBehaviour
                 break;
             }
         }
-
-        //Test
-        Time.timeScale = 5;
+        for (int i = 0; i < alliedShips.Count; i++)
+        {
+            if (alliedShips[i].gameObject.activeInHierarchy)
+            {
+                alliedShips[i].isInChargeOfDefusingBomb = true;
+                break;
+            }
+        }
     }
 
     public void BombCarrierDied(AIController ship)
@@ -101,10 +113,48 @@ public class AIBombManager : MonoBehaviour
         StartCoroutine(SetNewShip(0.5f, ship));
     }
 
+    public void DefuseCarrierDied(AIController ship)
+    {
+       //enemyShips.Remove(ship);
+        if (ship.Team == Team.Enemy)
+        {
+            int rdm = Random.Range(0, enemyShips.Count);
+            for (int i = 0; i < enemyShips.Count; i++)
+            {
+                if (enemyShips[i].gameObject.activeInHierarchy)
+                {
+                    enemyShips[i].isInChargeOfDefusingBomb = true;
+                    return;
+                }
+            }
+        }
+        else
+        {
+            int rdm = Random.Range(0, alliedShips.Count);
+            for (int i = 0; i < alliedShips.Count; i++)
+            {
+                if (alliedShips[i].gameObject.activeInHierarchy)
+                {
+                    alliedShips[i].isInChargeOfDefusingBomb = true;
+                    return;
+                }
+            }
+        }
+        //si no encontro nave, ya sea enemigo o aliado, espera unos segundos y vuelve a intentar
+        StartCoroutine(SetNewShip_(0.5f, ship));
+    }
+
     IEnumerator SetNewShip(float delay, AIController ship)
     {
         yield return new WaitForSeconds(delay);
         BombCarrierDied(ship);
+
+    }
+
+    IEnumerator SetNewShip_(float delay, AIController ship)
+    {
+        yield return new WaitForSeconds(delay);
+        DefuseCarrierDied(ship);
 
     }
 }

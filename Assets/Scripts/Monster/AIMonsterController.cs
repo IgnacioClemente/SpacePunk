@@ -4,14 +4,25 @@ using UnityEngine;
 
 public class AIMonsterController : AIController
 {
+    private MonsterController monster;
+    public bool isInChargeOfShootingMonster;
+    private bool stay;
+    private float minMonsterDistance = 18;
+    private float shootDistance;
     protected override void Update()
     {
+        shootDistance = Vector2.Distance(monster.transform.position, transform.position);
         //timer -= Time.deltaTime;
         if (!isActiveAndEnabled) return;
 
         targetDistance = Vector3.Distance(target.transform.position, transform.position);
         LookAtTarget();
-        if (target != null)
+
+        if(isInChargeOfShootingMonster)
+        {
+            SetMonsterAsTarget();
+        }
+        else if (target != null)
         {
             if (targetDistance < chaseDistance)
             {
@@ -27,17 +38,23 @@ public class AIMonsterController : AIController
         }
         base.Update();
     }
-
-    public override void TakeDamage(int damage)
-    {
-        actualHealth -= damage;
-        if (actualHealth <= 0)
-        {
-            gameObject.SetActive(false);
-        }
-        Invoke("Respawn", 5f);
-    }
    
+    public void SetMonster(MonsterController monster)
+    {
+        this.monster = monster;
+    }
+
+    public void SetMonsterAsTarget()
+    {
+        target = monster.transform;
+        if (shootDistance <= minMonsterDistance)
+        {
+            actualSpeed = 0;
+            Attack();
+        }
+            
+    }
+
         // private bool paused;
         //private bool resume;
         //private float timer = 3f;

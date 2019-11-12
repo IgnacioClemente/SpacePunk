@@ -8,9 +8,6 @@ public class BombGameManager : MonoBehaviour
     public static BombGameManager Instance { get; private set; }
     [SerializeField] Text PlayerTeamScore;
     [SerializeField] Text EnemyTeamScore;
-    [SerializeField] Text WinGame;
-    [SerializeField] private GameObject whoWonCanvas;
-    [SerializeField] Text CountDownText;
     [SerializeField] BaseBehaviour enemyBase;
     [SerializeField] BaseBehaviour allyBase;
 
@@ -32,36 +29,28 @@ public class BombGameManager : MonoBehaviour
     {
         PlayerTeamScore.text = "PlayerTeamScore: " + playerScore.ToString() + "/3";
         EnemyTeamScore.text = "EnemyTeamScore: " + enemyScore.ToString() + "/3";
-
-        //CountDownText.text = timer.ToString();
-        whoWonCanvas.SetActive(false);
     }
 
     public void PlantBomb(Team team)
     {
         if(team == Team.Ally && !allyBase.Defused)
         {
-            allyBase.Planted = true;
             alliedBombPlanted = true;
         }
-        if (team == Team.Enemy && !enemyBase.Defused)
+        else if (team == Team.Enemy && !enemyBase.Defused)
         {
-            enemyBase.Planted = true;
             enemyBombPlanted = true;
         }
-
     }
 
     public void DefuseBomb(Team team)
     {
         if (team == Team.Ally)
         {
-            allyBase.Defused = true;
             enemyBombPlanted = false;
         }
-        if (team == Team.Enemy)
+        else if (team == Team.Enemy)
         {
-            enemyBase.Defused = true;
             alliedBombPlanted = false;
         }
     }
@@ -86,11 +75,6 @@ public class BombGameManager : MonoBehaviour
 
     public void Win(Team team)
     {
-        if (team == Team.Ally)
-            WinGame.text = "Ganaron los aliados";
-        else
-            WinGame.text = "Ganaron los enemigos";
-        whoWonCanvas.SetActive(true);
-        Time.timeScale = 0;
+        GameManager.Instance.EndGame(team);
     }
 }

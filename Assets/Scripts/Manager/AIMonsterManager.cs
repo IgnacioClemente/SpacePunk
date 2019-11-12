@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class AIMonsterManager : MonoBehaviour
 {
+    [SerializeField] MonsterController monster;
+
     List<AIMonsterController> enemyShips;
     List<AIMonsterController> alliedShips;
-    List<MonsterController> monsterList;
 
     public static AIMonsterManager Instance { get; private set; }
 
@@ -18,18 +19,15 @@ public class AIMonsterManager : MonoBehaviour
 
         enemyShips = new List<AIMonsterController>();
         alliedShips = new List<AIMonsterController>();
-        monsterList = new List<MonsterController>();
 
         foreach (Transform child in transform)
         {
             var ship = child.GetComponent<AIMonsterController>();
-            var monster = child.GetComponent<MonsterController>();
+
             if (ship.Team == Team.Enemy)
                 enemyShips.Add(ship);
             else
                 alliedShips.Add(ship);
-            if (monster.Team == Team.Monster)
-                monsterList.Add(monster);
         }
 
         var tempAlliedShips = new List<Transform>();
@@ -46,29 +44,35 @@ public class AIMonsterManager : MonoBehaviour
             tempEnemyShips.Add(enemyShips[i].transform);
         }
 
-        for (int i = 0; i < monsterList.Count; i++)
-        {
-            tempMonsterList.Add(monsterList[i].transform);
-        }
-
         for (int i = 0; i < enemyShips.Count; i++)
         {
             enemyShips[i].SetShip(tempAlliedShips);
+            enemyShips[i].SetMonster(monster);
         }
 
         for (int i = 0; i < alliedShips.Count; i++)
         {
             alliedShips[i].SetShip(tempEnemyShips);
+            alliedShips[i].SetMonster(monster);
         }
 
-        for (int i = 0; i < monsterList.Count; i++)
+        for (int i = 0; i < enemyShips.Count; i++)
         {
-            monsterList[i].SetShip(tempMonsterList);
+            if (enemyShips[i].gameObject.activeInHierarchy)
+            {
+                enemyShips[i].isInChargeOfShootingMonster = true;
+                break;
+            }
         }
 
-
-        //Test
-        Time.timeScale = 5;
+        for (int i = 0; i < alliedShips.Count; i++)
+        {
+            if (alliedShips[i].gameObject.activeInHierarchy)
+            {
+                alliedShips[i].isInChargeOfShootingMonster = true;
+                break;
+            }
+        }
     }
 
 }

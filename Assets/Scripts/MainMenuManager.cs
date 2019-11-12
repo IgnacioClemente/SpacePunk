@@ -37,7 +37,6 @@ public class MainMenuManager : MonoBehaviour
         playSequence.Append(captureTheFlagButton.DOFade(1, 0.5f).OnStart(() => captureTheFlagText.DOFade(1, 0.5f)));
         playSequence.Append(bombButton.DOFade(1, 0.5f).OnStart(() => bombText.DOFade(1, 0.5f)));
         playSequence.Append(monsterButton.DOFade(1, 0.5f).OnStart(() => monsterText.DOFade(1, 0.5f)));
-
     }
 
     public void StartFlagGame()

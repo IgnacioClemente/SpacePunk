@@ -86,6 +86,7 @@ public class AIFlagController : AIController
     public override void TakeDamage(int damage)
     {
         actualHealth -= damage;
+        healthBar.fillAmount = actualHealth / maxHealth;
         if (actualHealth <= 0)
         {
             gameObject.SetActive(false);

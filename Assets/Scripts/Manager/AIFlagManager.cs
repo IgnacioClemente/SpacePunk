@@ -67,9 +67,6 @@ public class AIFlagManager : MonoBehaviour
                 break;
             }
         }
-
-        //Test
-        Time.timeScale = 2;
     }
 
     public void FlagCarrierDied(AIController ship)

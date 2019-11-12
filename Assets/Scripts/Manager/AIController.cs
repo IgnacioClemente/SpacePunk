@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AIController : MonoBehaviour
 {
@@ -12,16 +13,18 @@ public class AIController : MonoBehaviour
     [SerializeField] protected float chaseDistance = 18;
     [SerializeField] protected float lookDistance = 18;
     [SerializeField] float attackSpeed;
-    [SerializeField] int maxHealth = 15;
+    [SerializeField] protected float maxHealth = 15;
     [SerializeField] float speed = 2;
     [SerializeField] int damage = 5;
+    [Header("Canvas Settings")]
+    [SerializeField] protected Image healthBar;
 
     protected Transform target;
     protected Vector3 initialPosition;
     protected List<Transform> possibleTargets;
     
     protected float targetDistance;
-    protected int actualHealth;
+    protected float actualHealth;
     protected float actualSpeed;
     protected int actualDamage;
     protected GameObject[] tagPlayer;
@@ -30,7 +33,7 @@ public class AIController : MonoBehaviour
     protected bool canShoot = true;
     protected bool wait;
 
-    public int ActualHealth { get { return actualHealth; } set { actualHealth = value; } }
+    public float ActualHealth { get { return actualHealth; } set { actualHealth = value; } }
     public float ActualSpeed { get { return actualSpeed; } }
     public Team Team { get { return team; } }
 
@@ -44,7 +47,8 @@ public class AIController : MonoBehaviour
 
     protected virtual void Start()
     {
-        initialPosition = transform.position;    
+        initialPosition = transform.position;
+        healthBar.fillAmount = actualHealth / maxHealth;
     }
 
     protected virtual void Update()
@@ -100,8 +104,7 @@ public class AIController : MonoBehaviour
         if (targetAvailable)
             ChooseTarget();
         else
-            wait = true;
-           
+            wait = true;    
     }
 
     public void ChooseTarget()
@@ -114,10 +117,11 @@ public class AIController : MonoBehaviour
     public virtual void TakeDamage(int damage)
     {
         actualHealth -= damage;
+        healthBar.fillAmount = actualHealth / maxHealth;
         if (actualHealth <= 0)
         {
             gameObject.SetActive(false);
-            Invoke("Respawn", 3f);
+            Invoke("Respawn", 5f);
         }
     }
 
@@ -125,6 +129,7 @@ public class AIController : MonoBehaviour
     {
         transform.position = initialPosition;
         actualHealth = maxHealth;
+        healthBar.fillAmount = actualHealth / maxHealth;
         gameObject.SetActive(true);
     }
 

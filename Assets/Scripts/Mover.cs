@@ -40,12 +40,13 @@ public class Mover : MonoBehaviour
             if(aiToDamage != null)
                 aiToDamage.TakeDamage(damage);
         }
+
         if(other.CompareTag("Monster"))
         {
+            Debug.Log(other.name);
             var monster = other.GetComponent<MonsterController>();
             if (monster != null)
                 monster.TakeDamage(damage, myTeam);
         }
-        Destroy(gameObject);
     }
 }

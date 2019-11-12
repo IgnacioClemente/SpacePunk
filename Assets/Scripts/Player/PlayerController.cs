@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] int maxHealth = 15;
+    [SerializeField] float maxHealth = 15;
     [SerializeField] int damage = 5;
     [SerializeField] float speed = 2;
 
@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     public float fireRateSingle;
     public float fireRateDouble;
     public bool isAlive = true;
-    public int actualHealth;
+    public float actualHealth;
     public float actualSpeed;
 
     protected bool hasFlag;
@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
     //private bool paused;
     //private bool resume;
 
-    public int ActualHealth { get { return actualHealth; } set { actualHealth = value; } }
+    public float ActualHealth { get { return actualHealth; } set { actualHealth = value; } }
     public float ActualSpeed { get { return actualSpeed; } }
     public bool HasFlag { get { return hasFlag; } }
 
@@ -48,6 +48,7 @@ public class PlayerController : MonoBehaviour
     {
         initialPosition = transform.position;
         initialRotation = transform.rotation;
+        UpdateHealthBar();
     }
 
    protected virtual void Update()
@@ -108,6 +109,7 @@ public class PlayerController : MonoBehaviour
 
     public void Respawn()
     {
+        RestoreHealth();
         transform.position = initialPosition;
         transform.rotation = initialRotation;
         gameObject.SetActive(true);
