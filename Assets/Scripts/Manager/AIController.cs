@@ -58,8 +58,7 @@ public class AIController : MonoBehaviour
             CheckAvailableTargets();
             return; 
         }
-
-        if (target != null && target.gameObject.activeSelf)
+        else if (target != null && target.gameObject.activeSelf)
             transform.position += (target.position - transform.position).normalized * actualSpeed * Time.deltaTime;
         else
             CheckAvailableTargets();

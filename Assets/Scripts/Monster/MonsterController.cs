@@ -21,6 +21,7 @@ public class MonsterController : MonoBehaviour
     float actualHealth;
     bool isAlive = true;
     bool canShoot = true;
+    int direction = 1;
 
     List<Transform> possibleTargets = new List<Transform>();
     public bool IsAlive { get { return isAlive; } }
@@ -38,6 +39,10 @@ public class MonsterController : MonoBehaviour
 
     void Update()
     {
+        transform.position += Vector3.up * speed * direction * Time.deltaTime;
+
+        if (Mathf.Abs(transform.position.y) >= 12)
+            direction *= -1;
         //timer -= Time.deltaTime;
         if (!isActiveAndEnabled) return;
 

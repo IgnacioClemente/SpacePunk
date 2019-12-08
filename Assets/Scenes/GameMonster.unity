@@ -1342,7 +1342,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -315.99985, y: 197}
+  m_AnchoredPosition: {x: -315.9999, y: 197}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &932026407
@@ -1768,7 +1768,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 114383779407240938, guid: c67d553b695bd5e42992d0f8a1c3c9c5,
     type: 2}
   maxHealth: 100
-  speed: 2
+  speed: 8
   attackCooldown: 3
   damage: 5
   shotSpawn_1: {fileID: 1974788534}
@@ -1822,7 +1822,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1333514529}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.025245667, y: 5.1, z: 0}
+  m_LocalPosition: {x: 0.025245667, y: 0, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 1}
   m_Children:
   - {fileID: 1974788534}

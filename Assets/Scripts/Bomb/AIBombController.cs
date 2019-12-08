@@ -38,11 +38,12 @@ public class AIBombController : AIController
         //timer -= Time.deltaTime;
         if (!isActiveAndEnabled || target == null) return;
 
-            targetDistance = Vector3.Distance(target.transform.position, transform.position);
+        targetDistance = Vector3.Distance(target.transform.position, transform.position);
+        if(!isPlanting && !isDefusing)
             LookAtTarget();
 
-            var distancePlant = Vector2.Distance(enemyBase.transform.position, transform.position);
-            var distanceDefuse = Vector2.Distance(allyBase.transform.position, transform.position);
+        var distancePlant = Vector2.Distance(enemyBase.transform.position, transform.position);
+        var distanceDefuse = Vector2.Distance(allyBase.transform.position, transform.position);
 
         if (isInChargeOfPlantingBomb)
         {
