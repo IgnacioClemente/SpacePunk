@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MonsterController : MonoBehaviour
+public class MonsterController : Unit
 {
     [Header("Canvas Settings")]
     [SerializeField] Image healthBar;
     [SerializeField] Text healthText;
     [Header("Monster Settings")]
-    [SerializeField] Mover bulletPrefab;
+    [SerializeField] Bullet bulletPrefab;
     [SerializeField] float maxHealth = 100;
     [SerializeField] float speed = 2;
     [SerializeField] float attackCooldown = 3f;
@@ -22,6 +22,7 @@ public class MonsterController : MonoBehaviour
     bool isAlive = true;
     bool canShoot = true;
     int direction = 1;
+    private bool paused;
 
     List<Transform> possibleTargets = new List<Transform>();
     public bool IsAlive { get { return isAlive; } }
@@ -39,6 +40,7 @@ public class MonsterController : MonoBehaviour
 
     void Update()
     {
+        if (paused) return;
         transform.position += Vector3.up * speed * direction * Time.deltaTime;
 
         if (Mathf.Abs(transform.position.y) >= 12)
@@ -104,5 +106,15 @@ public class MonsterController : MonoBehaviour
     {
         if (possibleTargets.Contains(target))
             possibleTargets.Remove(target);
+    }
+
+    public override void Pause()
+    {
+        paused = true;
+    }
+
+    public override void Resume()
+    {
+        paused = false;
     }
 }

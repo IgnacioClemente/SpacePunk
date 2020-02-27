@@ -7,7 +7,7 @@ public class PoolManager : MonoBehaviour {
     [SerializeField] static PoolManager poolManagerAux;
     [SerializeField] private BulletPool[] array;
     [SerializeField] private Vector3 num;
-    Mover[] arrayGameObject;
+    Bullet[] arrayGameObject;
     Vector3 pos;
     Transform parent;
     
@@ -40,7 +40,7 @@ public class PoolManager : MonoBehaviour {
         InicializePool();
     }
 
-    public Mover CallByName(string name)
+    public Bullet CallByName(string name)
     {
         //recorro el array y obtengo el nombre y lo comparo y luego lo retorno si no encontre retorno null
         for(int i = 0; i < array.Length;i++)
@@ -55,7 +55,7 @@ public class PoolManager : MonoBehaviour {
         return null;
     }
 
-    public void TurnOffByName(string name, Mover objectToTurnOff)
+    public void TurnOffByName(string name, Bullet objectToTurnOff)
     {
         //Recorro los pools hasta encontrar el correcto
         for (int i = 0; i < array.Length; i++)

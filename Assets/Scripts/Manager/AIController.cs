@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AIController : MonoBehaviour
+public class AIController : Unit
 {
     [SerializeField] protected Team team;
     [SerializeField] protected PlayerController player;
     [SerializeField] Transform shotSpawn;
-    [SerializeField] protected Mover bulletPrefab;
+    [SerializeField] protected Bullet bulletPrefab;
     [SerializeField] protected float attackDistance = 18;
     [SerializeField] protected float chaseDistance = 18;
-    [SerializeField] protected float lookDistance = 18;
+    [SerializeField] protected float stoppingDistance = 5;
+    [SerializeField] protected float slowDistance = 13;
     [SerializeField] float attackSpeed;
     [SerializeField] protected float maxHealth = 15;
     [SerializeField] float speed = 2;
@@ -31,7 +32,9 @@ public class AIController : MonoBehaviour
 
     protected float remainingCooldown;
     protected bool canShoot = true;
+    protected bool fighting;
     protected bool wait;
+    protected bool active = true;
 
     public float ActualHealth { get { return actualHealth; } set { actualHealth = value; } }
     public float ActualSpeed { get { return actualSpeed; } }
@@ -53,22 +56,31 @@ public class AIController : MonoBehaviour
 
     protected virtual void Update()
     {
-        if(wait)
+        if (!active) return;
+
+        if (!canShoot)
+        {
+            remainingCooldown += Time.deltaTime;
+
+            if (remainingCooldown >= attackSpeed)
+                canShoot = true;
+        }
+
+        if (wait)
         {
             CheckAvailableTargets();
-            return; 
+            return;
         }
         else if (target != null && target.gameObject.activeSelf)
+        {
+            var distance = Vector2.Distance(transform.position, target.position);
+
+            if (fighting && distance < stoppingDistance) return;
+
             transform.position += (target.position - transform.position).normalized * actualSpeed * Time.deltaTime;
+        }
         else
             CheckAvailableTargets();
-
-        if (canShoot) return;
-
-        remainingCooldown += Time.deltaTime;
-
-        if (remainingCooldown >= attackSpeed)
-            canShoot = true;
     }
 
     public virtual void SetShip(List<Transform> targets)
@@ -149,6 +161,37 @@ public class AIController : MonoBehaviour
         bullet1.SetBullet(actualDamage, (target.position - transform.position).normalized,team);
         canShoot = false;
         remainingCooldown = 0;
+    }
+
+    public void BuffAttack(int amount, float duration)
+    {
+        actualDamage += amount;
+        Invoke("ResetAttack", duration);
+    }
+
+    public void ResetAttack()
+    {
+        actualDamage = damage;
+    }
+
+    public void Heal(int amount)
+    {
+        actualHealth += amount;
+
+        if (actualHealth >= maxHealth)
+            actualHealth = maxHealth;
+
+        healthBar.fillAmount = actualHealth / maxHealth;
+    }
+
+    public override void Pause()
+    {
+        active = false;
+    }
+
+    public override void Resume()
+    {
+        active = true;
     }
 }
 

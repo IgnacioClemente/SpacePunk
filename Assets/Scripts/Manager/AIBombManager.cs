@@ -49,65 +49,58 @@ public class AIBombManager : MonoBehaviour
         {
             alliedShips[i].SetShip(tempEnemyShips);
         }
-        for (int i = 0; i < enemyShips.Count; i++)
+    }
+
+    public void AssingBombDefuser(Team team)
+    {
+        if(team == Team.Ally)
         {
-            if (enemyShips[i].gameObject.activeInHierarchy)
+            for (int i = 0; i < alliedShips.Count; i++)
             {
-                if (enemyShips[i].isInChargeOfDefusingBomb == true)
+                if (alliedShips[i].gameObject.activeInHierarchy)
                 {
-                    continue;
+                    alliedShips[i].isInChargeOfDefusingBomb = true;
+                    break;
                 }
-                else
-                {
-                    enemyShips[i].isInChargeOfPlantingBomb = true;
-                }
-                break;
-            }
-        }
-        for (int i = 0; i < enemyShips.Count; i++)
-        {
-            if (enemyShips[i].gameObject.activeInHierarchy)
-            {
-                if (enemyShips[i].isInChargeOfPlantingBomb == true)
-                {
-                    continue;
-                }
-                else
-                {
-                    enemyShips[i].isInChargeOfDefusingBomb = true;
-                }
-                break;
             }
         }
 
-        for (int i = 0; i < alliedShips.Count; i++)
+        if(team == Team.Enemy)
         {
-            if (alliedShips[i].gameObject.activeInHierarchy)
+            for (int i = 0; i < enemyShips.Count; i++)
             {
-                if (alliedShips[i].isInChargeOfDefusingBomb == true)
+                if (enemyShips[i].gameObject.activeInHierarchy)
                 {
-                    continue;
+                    enemyShips[i].isInChargeOfDefusingBomb = true;
+                    break;
                 }
-                else
-                {
-                    alliedShips[i].isInChargeOfPlantingBomb = true;
-                }
-                break;
             }
         }
-        for (int i = 0; i < alliedShips.Count; i++)
+    }
+
+    public void AssingBombCarrier(Team team)
+    {
+        if (team == Team.Ally)
         {
-            if (alliedShips[i].gameObject.activeInHierarchy)
+            for (int i = 0; i < alliedShips.Count; i++)
             {
-                if (alliedShips[i].isInChargeOfPlantingBomb == true)
+                if (alliedShips[i].gameObject.activeInHierarchy)
                 {
-                    continue;
-                } 
-                else
-                {
-                    alliedShips[i].isInChargeOfDefusingBomb = true;
+                    alliedShips[i].isInChargeOfPlantingBomb = true;
+                    break;
                 }
-                break;
+            }
+        }
+
+        if (team == Team.Enemy)
+        {
+            for (int i = 0; i < enemyShips.Count; i++)
+            {
+                if (enemyShips[i].gameObject.activeInHierarchy)
+                {
+                    enemyShips[i].isInChargeOfPlantingBomb = true;
+                    break;
+                }
             }
         }
     }
@@ -194,6 +187,24 @@ public class AIBombManager : MonoBehaviour
         }
         //si no encontro nave, ya sea enemigo o aliado, espera unos segundos y vuelve a intentar
         StartCoroutine(SetNewShip_(0.5f, ship));
+    }
+
+    public void BombExploted(Team team)
+    {
+        if(team == Team.Ally)
+        {
+            for (int i = 0; i < alliedShips.Count; i++)
+            {
+                alliedShips[i].BombExploted();
+            }
+        }
+        else
+        {
+            for (int i = 0; i < enemyShips.Count; i++)
+            {
+                enemyShips[i].BombExploted();
+            }
+        }
     }
 
     IEnumerator SetNewShip(float delay, AIController ship)

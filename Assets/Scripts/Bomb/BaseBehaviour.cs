@@ -51,6 +51,7 @@ public class BaseBehaviour : MonoBehaviour
     public void DefuseBomb(Team team)
     {
         defused = true;
+        AIBombManager.Instance.AssingBombCarrier(team);
         planted = false;
         _myBomb.Defuse(this,team);
         BombGameManager.Instance.DefuseBomb(myTeam);
@@ -60,6 +61,8 @@ public class BaseBehaviour : MonoBehaviour
     public void TakeDamage(Team team)
     {
         bombExploted = true;
+        AIBombManager.Instance.AssingBombCarrier(team);
+        AIBombManager.Instance.BombExploted(team);
         actualHealth -= damage;
         healthBar.fillAmount = actualHealth / maxHealth;
 

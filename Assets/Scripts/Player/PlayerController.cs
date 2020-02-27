@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Unit
 {
     [SerializeField] float maxHealth = 15;
     [SerializeField] int damage = 5;
@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
 
     public Image HealthBar;
     public float HealthBarYOffset = 2;
-    public Mover shot;
+    public Bullet shot;
     public Transform shotSpawn;
     public Transform shotSpawn_1;
     public Transform shotSpawn_2;
@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     private int actualDamage;
     private Vector3 initialPosition;
     private Quaternion initialRotation;
+    private bool paused;
     //private bool paused;
     //private bool resume;
 
@@ -53,29 +54,29 @@ public class PlayerController : MonoBehaviour
 
    protected virtual void Update()
    {
-        if (!isActiveAndEnabled) return;
+        if (!isActiveAndEnabled || paused) return;
 
-            accelerationForce = Input.GetAxis("Vertical") * Time.deltaTime * 5.0f;
-            var rotationForce = Input.GetAxis("Horizontal") * 3.0f;
+        accelerationForce = Input.GetAxis("Vertical") * Time.deltaTime * 5.0f;
+        var rotationForce = Input.GetAxis("Horizontal") * 3.0f;
 
-            transform.eulerAngles += new Vector3(0, 0, -rotationForce);
-            transform.Translate(-accelerationForce, 0, 0);
+        transform.eulerAngles += new Vector3(0, 0, -rotationForce);
+        transform.Translate(-accelerationForce, 0, 0);
 
-            if (Input.GetMouseButton(0) && Time.time > nextFireSingle)
-            {
-                nextFireSingle = Time.time + fireRateSingle;
-                Mover bullet = Instantiate(shot, shotSpawn.transform.position, shot.transform.rotation);
-                bullet.SetBullet(actualDamage, -transform.right,Team.Ally);
-            }
-            if (Input.GetMouseButton(1) && Time.time > nextFireDouble)
-            {
-                nextFireDouble = Time.time + fireRateDouble;
-                Mover bullet1 = Instantiate(shot, shotSpawn_1.transform.position, shot.transform.rotation);
-                Mover bullet2 = Instantiate(shot, shotSpawn_2.transform.position, shot.transform.rotation);
+        if (Input.GetMouseButton(0) && Time.time > nextFireSingle)
+        {
+            nextFireSingle = Time.time + fireRateSingle;
+            Bullet bullet = Instantiate(shot, shotSpawn.transform.position, shot.transform.rotation);
+            bullet.SetBullet(actualDamage, -transform.right,Team.Ally);
+        }
+        if (Input.GetMouseButton(1) && Time.time > nextFireDouble)
+        {
+            nextFireDouble = Time.time + fireRateDouble;
+            Bullet bullet1 = Instantiate(shot, shotSpawn_1.transform.position, shot.transform.rotation);
+            Bullet bullet2 = Instantiate(shot, shotSpawn_2.transform.position, shot.transform.rotation);
 
-                bullet1.SetBullet(actualDamage, -transform.right, Team.Ally);
-                bullet2.SetBullet(actualDamage, -transform.right, Team.Ally);
-            }
+            bullet1.SetBullet(actualDamage, -transform.right, Team.Ally);
+            bullet2.SetBullet(actualDamage, -transform.right, Team.Ally);
+        }
     }
 
     public void TakeDamage(int damage)
@@ -115,13 +116,34 @@ public class PlayerController : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    /*public void Pause()
+    public void BuffAttack(int amount, float duration)
+    {
+        actualDamage += amount;
+        Invoke("ResetAttack", duration);
+    }
+
+    public void ResetAttack()
+    {
+        actualDamage = damage;
+    }
+
+    public void Heal(int amount)
+    {
+        actualHealth += amount;
+
+        if (actualHealth >= maxHealth)
+            actualHealth = maxHealth;
+
+        UpdateHealthBar();
+    }
+
+    public override void Pause()
     {
         paused = true;
     }
 
-    public void Resume()
+    public override void Resume()
     {
-        resume = true;
-    }*/
+        paused = false;
+    }
 }

@@ -156,16 +156,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08ed0fcef9425194299b634facb8914f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 54393700080156434}
+  maxHealth: 15
+  damage: 5
   speed: 5
-  shot: {fileID: 1478161341519974, guid: 0695caa36118ace4498f87aa0cad123e, type: 2}
+  HealthBar: {fileID: 0}
+  HealthBarYOffset: 2
+  shot: {fileID: 0}
   shotSpawn: {fileID: 4586278072815568}
   shotSpawn_1: {fileID: 4310704270615188}
   shotSpawn_2: {fileID: 4783349295349176}
-  fireRateSingle: 0.3
-  fireRateDouble: 0.5
-  health: 15
-  rotationSpeed: 15
+  fireRateSingle: 0.7
+  fireRateDouble: 1
+  isAlive: 1
+  actualHealth: 0
+  actualSpeed: 0
 --- !u!136 &136424441495445556
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -188,7 +192,6 @@ SpriteRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -204,7 +207,6 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5

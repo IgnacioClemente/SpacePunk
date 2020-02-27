@@ -233,7 +233,8 @@ MonoBehaviour:
     type: 2}
   attackDistance: 18
   chaseDistance: 18
-  lookDistance: 18
+  stoppingDistance: 5
+  slowDistance: 13
   attackSpeed: 2
   maxHealth: 30
   speed: 5
@@ -1342,7 +1343,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -315.9999, y: 197}
+  m_AnchoredPosition: {x: -315.99988, y: 197}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &932026407
@@ -1442,7 +1443,8 @@ MonoBehaviour:
     type: 2}
   attackDistance: 18
   chaseDistance: 18
-  lookDistance: 18
+  stoppingDistance: 5
+  slowDistance: 13
   attackSpeed: 2
   maxHealth: 30
   speed: 5
@@ -1561,7 +1563,8 @@ MonoBehaviour:
     type: 2}
   attackDistance: 18
   chaseDistance: 18
-  lookDistance: 18
+  stoppingDistance: 5
+  slowDistance: 13
   attackSpeed: 2
   maxHealth: 30
   speed: 5
@@ -2649,7 +2652,8 @@ MonoBehaviour:
     type: 2}
   attackDistance: 18
   chaseDistance: 18
-  lookDistance: 18
+  stoppingDistance: 5
+  slowDistance: 13
   attackSpeed: 2
   maxHealth: 30
   speed: 5
@@ -3074,7 +3078,8 @@ MonoBehaviour:
     type: 2}
   attackDistance: 18
   chaseDistance: 18
-  lookDistance: 18
+  stoppingDistance: 5
+  slowDistance: 13
   attackSpeed: 2
   maxHealth: 30
   speed: 5
@@ -3458,8 +3463,8 @@ MonoBehaviour:
   shotSpawn: {fileID: 2032546909}
   shotSpawn_1: {fileID: 2032546908}
   shotSpawn_2: {fileID: 2032546907}
-  fireRateSingle: 0.4
-  fireRateDouble: 0.6
+  fireRateSingle: 0.7
+  fireRateDouble: 1
   isAlive: 1
   actualHealth: 0
   actualSpeed: 0

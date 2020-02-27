@@ -25,6 +25,7 @@ public class AIFlagController : AIController
             LookAtTarget();
             if (isInChargeOfTakingFlag)
             {
+                fighting = false;
                 if (team == Team.Ally && player.HasFlag == true)
                 {
                     isInChargeOfTakingFlag = false;
@@ -41,6 +42,7 @@ public class AIFlagController : AIController
             {
                 if (target != null)
                 {
+                    fighting = true;
                     if (targetDistance < chaseDistance)
                     {
                         if (targetDistance > attackDistance)
@@ -61,8 +63,8 @@ public class AIFlagController : AIController
     {
         target = enemyFlag.transform;
     }
-
-   private void OnTriggerEnter(Collider other)
+    
+    private void OnTriggerEnter(Collider other)
     {
         if (other.transform == allyFlag.transform)
         {

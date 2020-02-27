@@ -31,6 +31,12 @@ public class AIBombController : AIController
         base.Awake();
     }
 
+    protected override void Start()
+    {
+        AIBombManager.Instance.AssingBombCarrier(team);
+        base.Start();
+    }
+
     protected override void Update()
     {
         plantText.text = ((int)timeToPlant).ToString();
@@ -39,14 +45,17 @@ public class AIBombController : AIController
         if (!isActiveAndEnabled || target == null) return;
 
         targetDistance = Vector3.Distance(target.transform.position, transform.position);
+
         if(!isPlanting && !isDefusing)
             LookAtTarget();
 
         var distancePlant = Vector2.Distance(enemyBase.transform.position, transform.position);
         var distanceDefuse = Vector2.Distance(allyBase.transform.position, transform.position);
 
+
         if (isInChargeOfPlantingBomb)
         {
+            fighting = false;
             if (team == Team.Ally && player_bomb.PlantingBomb == true)
             {
                 isInChargeOfPlantingBomb = false;
@@ -68,19 +77,20 @@ public class AIBombController : AIController
                 timeToPlant -= Time.deltaTime;
                 if (timeToPlant <= 0)
                 {
+                    AIBombManager.Instance.AssingBombDefuser(team);
                     enemyBase.PlantBomb(team);
                     plantText.gameObject.SetActive(false);
                     wait = false;
                     isInChargeOfPlantingBomb = false;
                     isPlanting = false;
                     timeToPlant = 3f;
+                    target = FindBombPlanter();
                 }
-                target = FindBombPlanter();
-                AIBombManager.Instance.BombCarrierDied(this);
             }
         }
         else if (isInChargeOfDefusingBomb)
         {
+            fighting = false;
             if (team == Team.Ally && player_bomb.DefusingBomb == true)
             {
                 isInChargeOfDefusingBomb = false;
@@ -107,13 +117,13 @@ public class AIBombController : AIController
                     isInChargeOfDefusingBomb = false;
                     isDefusing = false;
                     timeToDefuse = 3f;
+                    target = FindDefuser();
                 }
-                target = FindDefuser();
-                AIBombManager.Instance.DefuseCarrierDied(this);
             }
         }
         else
         {
+            fighting = true;
             if (targetDistance < chaseDistance)
             {
                 if (targetDistance > attackDistance)
@@ -147,6 +157,15 @@ public class AIBombController : AIController
     public void DefuseBomb()
     {
         isDefusing = true;    
+    }
+
+    public void BombExploted()
+    {
+        if (isInChargeOfDefusingBomb)
+        {
+          isInChargeOfDefusingBomb = false;
+          ChooseTarget();
+        }
     }
 
     public override void TakeDamage(int damage)
@@ -186,6 +205,7 @@ public class AIBombController : AIController
 
     public Transform FindBombPlanter()
     {
+        fighting = true;
         for (int i = 0; i < possibleTargets.Count; i++)
         {
             var auxAI = possibleTargets[i].GetComponent<AIBombController>();
@@ -208,6 +228,7 @@ public class AIBombController : AIController
 
     public Transform FindDefuser()
     {
+        fighting = true;
         for (int i = 0; i < possibleTargets.Count; i++)
         {
             var auxAI = possibleTargets[i].GetComponent<AIBombController>();

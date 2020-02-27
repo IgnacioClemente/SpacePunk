@@ -6,10 +6,10 @@ using UnityEngine;
 public class BulletPool {
 
     [SerializeField] string poolName;
-    [SerializeField] Mover obj;
+    [SerializeField] Bullet obj;
     [SerializeField] int cant;
     [SerializeField] bool forceExpand;
-    Mover[] arrayGameObject;
+    Bullet[] arrayGameObject;
 
     public string GetName()
     {
@@ -19,7 +19,7 @@ public class BulletPool {
   public void InstanceArray(Vector3 pos,Transform parent)
     {
         //creo un array x lo recorre le asigno en esa posicion un parent luego una instancia de un gameobject y luego lo seteo en falso
-        arrayGameObject = new Mover[cant];
+        arrayGameObject = new Bullet[cant];
         for (int i = 0; i < arrayGameObject.Length; i++)
         {
             //arrayGameObject[arrayGameObject.Length - 1].transform.parent = parent;
@@ -28,7 +28,7 @@ public class BulletPool {
         }
     }
     // utilizito esta funcion solamente cuando quiero expadir el array
-    private Mover InstanceLastObject(Mover[]arrayGameObject, Vector3 pos, Transform parent)
+    private Bullet InstanceLastObject(Bullet[]arrayGameObject, Vector3 pos, Transform parent)
     {
         arrayGameObject[arrayGameObject.Length-1].transform.position = pos;
         arrayGameObject[arrayGameObject.Length-1].gameObject.SetActive(false);
@@ -37,7 +37,7 @@ public class BulletPool {
 
     }
 
-    public Mover GetObject( Vector3 pos, Transform parent)
+    public Bullet GetObject( Vector3 pos, Transform parent)
     {
         //busco el primer objeto que no esta activo y lo devuelvo
         for(int i = 0;i< arrayGameObject.Length;i++)
@@ -55,7 +55,7 @@ public class BulletPool {
         return null;
     }
 
-    public void ReturnObject(Mover objectToReturn, Transform pos)
+    public void ReturnObject(Bullet objectToReturn, Transform pos)
     {
         for (int i = 0; i < arrayGameObject.Length; i++)
         {
@@ -67,16 +67,16 @@ public class BulletPool {
         }
     }
 
-    private Mover ExpandGameArray(Mover[] arrayGameObject, Vector3 pos, Transform parent)
+    private Bullet ExpandGameArray(Bullet[] arrayGameObject, Vector3 pos, Transform parent)
     {
         //creo un array x y recorro el que me pasaron por parametro y le voy a pasando al aux posicion a posicion
         cant++;
-        Mover[]aux= new Mover[cant];
+        Bullet[]aux= new Bullet[cant];
         for(int i = 0;i< arrayGameObject.Length;i++)
         {
             aux[i] = arrayGameObject[i];
         }
-        arrayGameObject = new Mover[0];
+        arrayGameObject = new Bullet[0];
         arrayGameObject = aux;
         return arrayGameObject[arrayGameObject.Length - 1] = InstanceLastObject(arrayGameObject, pos, parent);
     }

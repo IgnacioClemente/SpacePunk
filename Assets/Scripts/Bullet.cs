@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Mover : MonoBehaviour
+public class Bullet : MonoBehaviour
 {
     public float speed;
     public Rigidbody rb;
@@ -48,5 +48,7 @@ public class Mover : MonoBehaviour
             if (monster != null)
                 monster.TakeDamage(damage, myTeam);
         }
+
+        Destroy(gameObject);
     }
 }
