@@ -1,1 +1,3 @@
 # SpacePunk
+Juego de naves espaciales 2d con varios modos de juegos como: plantar la bomba, capturar la bandera y matar al monstruo. En todos los modos el jugador tiene naves aliadas y enemigas. En el modo de plantar la bomba ambos equipos deben poner una bomba en la base enemiga y desactivar la bomba que fue puesta en la suya, el primero equipo en poder detonar 2 bombas en la base contraria gana. En el modo capturar la bandera ambos equipo deben obtener la bandera del contrario y llevarla a su base y defender la suya, el primer equipo en capturar 3 veces gana. En el modo monstruo
+hay un monstruo en el centro del mapa y ambos equipo deben dañarlo mientras este les lanza rocas, el equipo que logre matarlo gana.
